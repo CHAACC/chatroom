@@ -1,0 +1,14 @@
+.chatPanel {
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: hsla(0,0%,95%,.6);
+
+    .content {
+        flex: 1;
+    }
+
+    .editor {
+        height: 200px;
+    }
+}
