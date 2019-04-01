@@ -5,6 +5,7 @@ import styles from './index.module.scss'
 import io from '../../service/websocket'
 import Editor from './Editor'
 const socket = io()
+import MessageItem from './MessageItem'
 
 @inject(
     ({ chatStore }): IChat.IStoreProps => {
@@ -50,9 +51,10 @@ class ChatPanel extends React.Component<IChat.IStoreProps> {
             <div className={styles.chatPanel}>
                 <div className={styles.content}>
                     {messageList &&
-                        messageList.map(item => (
-                            <div key={item.message_id}>{item.message}</div>
-                        ))}
+                        messageList.map(item => {
+                            const {message} = item
+                            return <MessageItem key={item.message_id} message={message}/>
+                        })}
                 </div>
                 <div className={styles.editor}>
                     <Editor
