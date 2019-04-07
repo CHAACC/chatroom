@@ -4,7 +4,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  // background: url('../../assets/bg.jpg') no-repeat 100% 100% ;
+
   .app {
     display: flex;
     height: 500px;
@@ -16,11 +16,7 @@
       display: flex;
       flex: auto;
       border-radius: 20px;
-  
-      aside {
-        width: 300px;
-        background-color: rgba(74,144,226,.5);
-      }
+
     }
   }
 
