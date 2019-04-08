@@ -16,7 +16,10 @@
       display: flex;
       flex: auto;
       border-radius: 20px;
-
+      .sider {
+        width: 50px;
+        background-color: #ff0;
+      }
     }
   }
 

@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
+import classname from 'classname'
 
 import styles from './index.module.scss'
 import { IProps, IStoreProps } from './type'
@@ -19,16 +20,21 @@ export default class ChatList extends React.Component<IProps> {
     }
     render() {
         const {
-            chatStore: { chatList }
+            chatStore: { chatList, changeCurrentChatId, currentChatId }
         } = this.props
-        console.log(chatList)
         return (
             <div className={styles.chatList}>
                 {chatList.map(item => {
                     const { id, name } = item
                     return (
-                        <div key={id}>
-                            <div>touxiang</div>
+                        <div
+                            key={id}
+                            onClick={() => changeCurrentChatId(id)}
+                            className={classname(styles.chatItem, {
+                                [styles.current]: currentChatId === id
+                            })}
+                        >
+                            <div />
                             <div>
                                 <span>{name}</span>
                                 <span>456</span>

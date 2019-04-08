@@ -21,6 +21,7 @@ class App extends Component {
             <div className={styles.bg}>
                 <div className={styles.app}>
                     <div className={styles.layout}>
+                        <div className={styles.sider}/>
                         <ChatList/>
                         <ChatPanel />
                     </div>
