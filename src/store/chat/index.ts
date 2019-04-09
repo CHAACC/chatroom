@@ -1,15 +1,15 @@
 import { observable, action } from 'mobx'
 import axios from 'axios'
 
-import {StoreExt} from '../../utils/reactExt'
+import { StoreExt } from '../../utils/reactExt'
 
 export class ChatStore extends StoreExt {
-    @observable messageList: IChat.ImessageItem[] = []
+    @observable messageList: IChatStore.ImessageItem[] = []
     @observable chatList = []
     @observable currentChatId: number = null
 
     @action
-    pushMessage = (message: IChat.ImessageItem) => {
+    pushMessage = (message: IChatStore.ImessageItem) => {
         this.messageList.push(message)
     }
 
@@ -18,11 +18,22 @@ export class ChatStore extends StoreExt {
         this.currentChatId = id
     }
 
+    /**
+     * 获取聊天人列表
+     */
     fetchChatList = async (id: number) => {
-        const { data } =  await axios.get(`/chat_list/${id}`)
+        const { data } = await axios.get(`/chat_list/${id}`)
         this.save({
             chatList: data
         })
+    }
+
+    fetchHistoryList = async () => {
+        const { data } = await axios.get(`/message/group/${this.currentChatId}`)
+        console.log(data)
+        // this.save({
+        //     chatList: data
+        // })
     }
 }
 

@@ -7,21 +7,28 @@ import Editor from './Editor'
 const socket = io()
 import MessageItem from './MessageItem'
 
+interface IStoreProps {
+    store?: IChatStore.ChatStore
+}
+
 @inject(
-    ({ chatStore }): IChat.IStoreProps => {
-        const { messageList, pushMessage } = chatStore
-        return { messageList, pushMessage }
+    ({ chatStore }): IStoreProps => {
+        return {
+            store: chatStore
+        }
     }
 )
 @observer
-class ChatPanel extends React.Component<IChat.IStoreProps> {
+class ChatPanel extends React.Component<IStoreProps> {
     state = {
         inputValue: ''
     }
     componentDidMount() {
+        const {
+            store: { pushMessage }
+        } = this.props
         // 监听broadcast事件， 获取 服务器 消息
-        socket.on('broadcast', (message) => {
-            const { pushMessage } = this.props
+        socket.on('broadcast', (message: IChatStore.ImessageItem) => {
             if (pushMessage) {
                 pushMessage(message)
             }
@@ -45,15 +52,22 @@ class ChatPanel extends React.Component<IChat.IStoreProps> {
     }
 
     render() {
-        const { messageList } = this.props
+        const {
+            store: { messageList }
+        } = this.props
         const { inputValue } = this.state
         return (
             <div className={styles.chatPanel}>
                 <div className={styles.content}>
                     {messageList &&
                         messageList.map(item => {
-                            const {message} = item
-                            return <MessageItem key={item.message_id} message={message}/>
+                            const { message } = item
+                            return (
+                                <MessageItem
+                                    key={item.message_id}
+                                    message={message}
+                                />
+                            )
                         })}
                 </div>
                 <div className={styles.editor}>

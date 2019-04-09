@@ -3,24 +3,34 @@ import { inject, observer } from 'mobx-react'
 import classname from 'classname'
 
 import styles from './index.module.scss'
-import { IProps, IStoreProps } from './type'
+
+interface IStoreProps {
+    store?: IChatStore.ChatStore
+}
 
 @inject(
     ({ chatStore }): IStoreProps => {
-        return { chatStore }
+        return {
+            store: chatStore
+        }
     }
 )
 @observer
-export default class ChatList extends React.Component<IProps> {
-    componentDidMount() {
-        const { chatStore } = this.props
+export default class ChatList extends React.Component<IStoreProps> {
+    async componentDidMount() {
+        const { store } = this.props
         const userInfoString = localStorage.getItem('chatroom_user_info')
         const { id } = JSON.parse(userInfoString)
-        chatStore.fetchChatList(id)
+        await store.fetchChatList(id)
+        store.save({
+            currentChatId: store.chatList[0].id
+        })
+        // 获取历史消息
+        store.fetchHistoryList()
     }
     render() {
         const {
-            chatStore: { chatList, changeCurrentChatId, currentChatId }
+            store: { chatList, changeCurrentChatId, currentChatId }
         } = this.props
         return (
             <div className={styles.chatList}>
