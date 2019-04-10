@@ -31,9 +31,9 @@ export class ChatStore extends StoreExt {
     fetchHistoryList = async () => {
         const { data } = await axios.get(`/message/group/${this.currentChatId}`)
         console.log(data)
-        // this.save({
-        //     chatList: data
-        // })
+        this.save({
+            messageList: data
+        })
     }
 }
 

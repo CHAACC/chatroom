@@ -61,10 +61,10 @@ class ChatPanel extends React.Component<IStoreProps> {
                 <div className={styles.content}>
                     {messageList &&
                         messageList.map(item => {
-                            const { message } = item
+                            const { id, message } = item
                             return (
                                 <MessageItem
-                                    key={item.message_id}
+                                    key={id}
                                     message={message}
                                 />
                             )
