@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { inject, observer } from 'mobx-react'
 import classname from 'classname'
+import uuid from 'uuid'
 
 import styles from './index.module.scss'
 
@@ -38,7 +39,7 @@ export default class ChatList extends React.Component<IStoreProps> {
                     const { id, name } = item
                     return (
                         <div
-                            key={id}
+                            key={id || uuid()}
                             onClick={() => changeCurrentChatId(id)}
                             className={classname(styles.chatItem, {
                                 [styles.current]: currentChatId === id

@@ -36,9 +36,16 @@ class ChatPanel extends React.Component<IStoreProps> {
     }
 
     sendMsg = e => {
+        const userInfoString = localStorage.getItem('chatroom_user_info')
+        const { id } = JSON.parse(userInfoString)
+        const { store } = this.props
         if (e.keyCode === 13) {
             e.preventDefault()
-            socket.emit('sendMsg', this.state.inputValue)
+            socket.emit('sendMsg', {
+                message: this.state.inputValue,
+                from_user_id: id,
+                to_group_id: store.currentChatId
+            })
             this.setState({
                 inputValue: ''
             })

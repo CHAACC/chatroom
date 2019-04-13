@@ -12,7 +12,6 @@ const MessageItem = ({ content, createdAt }: IProps) => {
     const userInfoString = localStorage.getItem('chatroom_user_info')
     const { id } = JSON.parse(userInfoString)
     const isSelf = from_user_id === id
-    console.log(isSelf)
     return (
         <div
             className={classname(styles.wrapper, {
