@@ -3,22 +3,28 @@
     padding: 5px 10px;
     display: flex;
     &.self {
-        justify-content: flex-end;
+        transform: rotateY(180deg);
+        .item {
+            > div:nth-of-type(2) {
+                transform: rotateY(180deg);
+            }
+
+        }
     }
     .item {
         background-color: pink;
         display: flex;
         flex: none;
         > div:nth-of-type(1) {
-            background-color: #fff;
-            max-width: 100px;
-            word-wrap:break-word;
-        }
-        > div:nth-of-type(2) {
             width: 30px;
             height: 30px;
             border-radius: 50%;
             background-color: red;
+        }
+        > div:nth-of-type(2) {
+            background-color: #fff;
+            max-width: 100px;
+            word-wrap:break-word;
         }
     }
 }

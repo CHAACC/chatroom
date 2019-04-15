@@ -19,8 +19,8 @@ const MessageItem = ({ content, createdAt }: IProps) => {
             })}
         >
             <div className={styles.item}>
-                <div>{message}</div>
                 <div />
+                <div>{message}</div>
             </div>
         </div>
     )
