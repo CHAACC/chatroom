@@ -31,7 +31,7 @@ export default class ChatList extends React.Component<IStoreProps> {
     }
     render() {
         const {
-            store: { chatList, changeCurrentChatId, currentChatId }
+            store: { chatList, changeCurrentChatId, currentChatId, lastMessage }
         } = this.props
         return (
             <div className={styles.chatList}>
@@ -48,7 +48,7 @@ export default class ChatList extends React.Component<IStoreProps> {
                             <div />
                             <div>
                                 <span>{name}</span>
-                                <span>456</span>
+                                <span>{lastMessage}</span>
                             </div>
                         </div>
                     )

@@ -9,21 +9,15 @@ interface IProps {
     onKeyDown: (e) => void
 }
 
-export default class Editor extends React.Component<IProps> {
-    contentEditable: React.ReactNode
-
-    render() {
-        const { value, onChange, onKeyDown } = this.props
-        return (
-            <ContentEditable
-                className={style.editor}
-                innerRef={ref => (this.contentEditable = ref)}
-                html={value} // innerHTML of the editable div
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    onChange(e.target.value)
-                }
-                onKeyDown={onKeyDown}
-            />
-        )
-    }
+export default function Editor({ value, onChange, onKeyDown }: IProps) {
+    return (
+        <ContentEditable
+            className={style.editor}
+            html={value}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                onChange(e.target.value)
+            }
+            onKeyDown={onKeyDown}
+        />
+    )
 }

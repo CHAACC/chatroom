@@ -20,9 +20,6 @@ interface IStoreProps {
 )
 @observer
 class ChatPanel extends React.Component<IStoreProps> {
-    state = {
-        inputValue: ''
-    }
     componentDidMount() {
         const {
             store: { pushMessage }
@@ -42,27 +39,26 @@ class ChatPanel extends React.Component<IStoreProps> {
         if (e.keyCode === 13) {
             e.preventDefault()
             socket.emit('sendMsg', {
-                message: this.state.inputValue,
+                message: store.inputValue,
                 from_user_id: id,
                 to_group_id: store.currentChatId
             })
-            this.setState({
+            store.save({
                 inputValue: ''
             })
         }
     }
 
     handleInputChange = (value: string) => {
-        this.setState({
+        this.props.store.save({
             inputValue: value
         })
     }
 
     render() {
         const {
-            store: { messageList }
+            store: { messageList, inputValue }
         } = this.props
-        const { inputValue } = this.state
         return (
             <div className={styles.chatPanel}>
                 <div className={styles.content}>

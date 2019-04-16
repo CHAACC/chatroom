@@ -11,3 +11,11 @@ interface ImessageItem {
     to_group_id?: number
     from_user_id?: number
 }
+
+interface chatItem {
+    created_at?: string
+    creator_id?: number
+    group_notice?: string
+    id?: number
+    name?: string
+}

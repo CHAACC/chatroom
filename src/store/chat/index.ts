@@ -1,12 +1,18 @@
-import { observable, action } from 'mobx'
+import { observable, action, computed } from 'mobx'
 import axios from 'axios'
+import {get} from 'lodash'
 
 import { StoreExt } from '../../utils/reactExt'
 
 export class ChatStore extends StoreExt {
     @observable messageList: IChatStore.ImessageItem[] = []
-    @observable chatList = []
+    @observable chatList: IChatStore.chatItem[] = []
     @observable currentChatId: number = null
+    @observable inputValue: string = null
+
+    @computed get lastMessage() {
+        return get(this.messageList, `[${this.messageList.length - 1}].message`)
+    }
 
     @action
     pushMessage = (message: IChatStore.ImessageItem) => {
@@ -30,7 +36,6 @@ export class ChatStore extends StoreExt {
 
     fetchHistoryList = async () => {
         const { data } = await axios.get(`/message/group/${this.currentChatId}`)
-        console.log(data)
         this.save({
             messageList: data
         })
