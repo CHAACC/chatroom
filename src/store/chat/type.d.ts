@@ -10,6 +10,7 @@ interface ImessageItem {
     created_at?: string
     to_group_id?: number
     from_user_id?: number
+    username?: string
 }
 
 interface chatItem {

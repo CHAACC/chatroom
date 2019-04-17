@@ -30,7 +30,14 @@ class ChatPanel extends React.Component<IStoreProps> {
                 pushMessage(message)
             }
         })
+        setTimeout(() => {
+            this.listWrapper.children[
+                this.listWrapper.children.length - 1
+            ].scrollIntoView()
+        }, 100)
     }
+
+    listWrapper
 
     sendMsg = e => {
         const userInfoString = localStorage.getItem('chatroom_user_info')
@@ -61,16 +68,14 @@ class ChatPanel extends React.Component<IStoreProps> {
         } = this.props
         return (
             <div className={styles.chatPanel}>
-                <div className={styles.content}>
+                <div
+                    className={styles.content}
+                    ref={ref => (this.listWrapper = ref)}
+                >
                     {messageList &&
                         messageList.map(item => {
                             const { id } = item
-                            return (
-                                <MessageItem
-                                    key={id}
-                                    content={item}
-                                />
-                            )
+                            return <MessageItem key={id} content={item} />
                         })}
                 </div>
                 <div className={styles.editor}>

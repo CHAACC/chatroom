@@ -4,7 +4,10 @@
     &.self {
         transform: rotateY(180deg);
         .item {
-            > div:nth-of-type(2) {
+            .right {
+                .nicknameTime{
+                    transform: rotateY(180deg);
+                }
                 .message{
                     transform: rotateY(180deg);
                     border-radius:  10px 0 10px 10px;
@@ -17,25 +20,38 @@
     .item {
         display: flex;
         flex: none;
-        > div:nth-of-type(1) {
+        .avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             background-color: red;
         }
-        > div:nth-of-type(2) {
-            display: flex;
+        .right {
+            margin-left: 10px;
             position: relative;
-            padding-top: 20px;
+            .nicknameTime {
+                height: 20px;
+                display: flex;
+                align-items: flex-end;
+                .nickname {
+                    color: #333;
+                    font-size: 13px;
+                    margin-left: 6px;
+                    user-select: text;
+                }
+                .createdAt {
+                    color: #666;
+                    font-size: 12px;
+                    margin-left: 8px;
+                }
+            }
             .message {
                 background-color: rgba($color: #fff, $alpha: 0.8);
                 max-width: 150px;
                 word-wrap:break-word;
                 word-break: break-all;
-                margin-left: 10px;
                 border-radius: 0 10px 10px 10px;
-                display: flex;
-                align-items: center;
+                display: inline-block;
                 padding: 5px;
             }
             .arrows{
@@ -45,7 +61,8 @@
                 border-width: 0 7px 15px 0;
                 border-color: transparent hsla(0,0%,100%,.8) transparent transparent;
                 position: absolute;
-                left: 3px;
+                left: -7px;
+                top: 20px;
             }
         }
     }
