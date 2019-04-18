@@ -2,9 +2,7 @@ import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 
 import styles from './index.module.scss'
-import io from '../../service/websocket'
 import Editor from './Editor'
-const socket = io()
 import MessageItem from './MessageItem'
 
 interface IStoreProps {
@@ -12,7 +10,7 @@ interface IStoreProps {
 }
 
 @inject(
-    ({ chatStore }): IStoreProps => {
+    ({ chatStore }: IAllStore): IStoreProps => {
         return {
             store: chatStore
         }
@@ -21,15 +19,6 @@ interface IStoreProps {
 @observer
 class ChatPanel extends React.Component<IStoreProps> {
     componentDidMount() {
-        const {
-            store: { pushMessage }
-        } = this.props
-        // 监听broadcast事件， 获取 服务器 消息
-        socket.on('broadcast', (message: IChatStore.ImessageItem) => {
-            if (pushMessage) {
-                pushMessage(message)
-            }
-        })
         setTimeout(() => {
             this.listWrapper.children[
                 this.listWrapper.children.length - 1
@@ -45,7 +34,7 @@ class ChatPanel extends React.Component<IStoreProps> {
         const { store } = this.props
         if (e.keyCode === 13) {
             e.preventDefault()
-            socket.emit('sendMsg', {
+            window.socket.emit('sendMsg', {
                 message: store.inputValue,
                 from_user_id: id,
                 to_group_id: store.currentChatId

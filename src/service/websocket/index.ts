@@ -8,6 +8,9 @@ const socket = function() {
     _io.on('disconnect', function() {
         console.log('断开连级')
     })
+    _io.on('online', (msg: string) => {
+        console.log(msg)
+    })
     return _io
 }
 
