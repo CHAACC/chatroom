@@ -24,6 +24,23 @@ class ChatPanel extends React.Component<IStoreProps> {
                 this.listWrapper.children.length - 1
             ].scrollIntoView()
         }, 100)
+        this.listWrapper.addEventListener('scroll', this.onScroll)
+    }
+
+    componentWillUnmount() {
+        this.listWrapper.removeEventListen('scroll')
+    }
+
+    onScroll = e => {
+        const { scrollTop } = e.srcElement
+        const { store } = this.props
+        if (scrollTop === 0) {
+            store.save({
+                page: ++store.page
+            })
+            // 获取历史消息
+            store.fetchHistoryList()
+        }
     }
 
     listWrapper
