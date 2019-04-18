@@ -1,99 +1,96 @@
-import * as React from 'react'
-import { observer, inject } from 'mobx-react'
+import React, { useEffect, useRef } from 'react'
+import { inject } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
+import { get, isEmpty } from 'lodash'
 
 import styles from './index.module.scss'
 import Editor from './Editor'
 import MessageItem from './MessageItem'
 
 interface IStoreProps {
-    store?: IChatStore.ChatStore
+    chatStore?: IChatStore.ChatStore
 }
 
-@inject(
-    ({ chatStore }: IAllStore): IStoreProps => {
-        return {
-            store: chatStore
+function ChatPanel({ chatStore }: IStoreProps) {
+    const {
+        messageList,
+        inputValue,
+        save,
+        fetchHistoryList,
+        currentChatId
+    } = chatStore
+    let { page } = chatStore
+    const listWrapper: any = useRef()
+
+    // 初始化滚动条滑到底部
+    useEffect(() => {
+        const messageListNode = get(listWrapper, 'current.children')
+        const lastNodeIndex = get(messageListNode, 'length')
+        if(!isEmpty(messageListNode)) {
+            messageListNode[lastNodeIndex - 1].scrollIntoView()
         }
-    }
-)
-@observer
-class ChatPanel extends React.Component<IStoreProps> {
-    componentDidMount() {
-        setTimeout(() => {
-            this.listWrapper.children[
-                this.listWrapper.children.length - 1
-            ].scrollIntoView()
-        }, 100)
-        this.listWrapper.addEventListener('scroll', this.onScroll)
-    }
+        listWrapper.current.addEventListener('scroll', onScroll)
+        return function cleanup() {
+            listWrapper.current.removeEventListener('scroll', onScroll)
+        }
+    }, [messageList])
 
-    componentWillUnmount() {
-        this.listWrapper.removeEventListen('scroll')
-    }
-
-    onScroll = e => {
+    const onScroll = e => {
         const { scrollTop } = e.srcElement
-        const { store } = this.props
         if (scrollTop === 0) {
-            store.save({
-                page: ++store.page
+            save({
+                page: ++page
             })
             // 获取历史消息
-            store.fetchHistoryList()
+            fetchHistoryList()
         }
     }
-
-    listWrapper
-
-    sendMsg = e => {
+    const sendMsg = e => {
         const userInfoString = localStorage.getItem('chatroom_user_info')
         const { id } = JSON.parse(userInfoString)
-        const { store } = this.props
         if (e.keyCode === 13) {
             e.preventDefault()
             window.socket.emit('sendMsg', {
-                message: store.inputValue,
+                message: inputValue,
                 from_user_id: id,
-                to_group_id: store.currentChatId
+                to_group_id: currentChatId
             })
-            store.save({
+            save({
                 inputValue: ''
             })
         }
     }
 
-    handleInputChange = (value: string) => {
-        this.props.store.save({
+    const handleInputChange = (value: string) => {
+        save({
             inputValue: value
         })
     }
 
-    render() {
-        const {
-            store: { messageList, inputValue }
-        } = this.props
-        return (
-            <div className={styles.chatPanel}>
-                <div
-                    className={styles.content}
-                    ref={ref => (this.listWrapper = ref)}
-                >
-                    {messageList &&
-                        messageList.map(item => {
-                            const { id } = item
-                            return <MessageItem key={id} content={item} />
-                        })}
-                </div>
-                <div className={styles.editor}>
-                    <Editor
-                        value={inputValue}
-                        onChange={this.handleInputChange}
-                        onKeyDown={this.sendMsg}
-                    />
-                </div>
+    return (
+        <div className={styles.chatPanel}>
+            <div className={styles.content} ref={listWrapper}>
+                {messageList &&
+                    messageList.map(item => {
+                        const { id } = item
+                        return <MessageItem key={id} content={item} />
+                    })}
             </div>
-        )
-    }
+            <div className={styles.editor}>
+                <Editor
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    onKeyDown={sendMsg}
+                />
+            </div>
+        </div>
+    )
 }
 
-export default ChatPanel
+export default inject(
+    ({ chatStore }: IAllStore): IStoreProps => {
+        return {
+            chatStore
+        }
+    }
+)(observer(ChatPanel))

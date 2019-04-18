@@ -9,7 +9,7 @@ export class ChatStore extends StoreExt {
     @observable messageList: IChatStore.ImessageItem[] = []
     @observable chatList: IChatStore.chatItem[] = []
     @observable currentChatId: number = null
-    @observable inputValue: string = null
+    @observable inputValue: string = ''
 
     @observable page: number = 1
     @observable size: number = 10
@@ -36,6 +36,7 @@ export class ChatStore extends StoreExt {
         this.save({
             chatList: data
         })
+        return data
     }
 
     // 获取历史消息列表
