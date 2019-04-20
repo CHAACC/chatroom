@@ -32,7 +32,7 @@
         "ordered-imports": false,
         "prefer-method-signature": false,
         "prefer-template": [true, "allow-single-concat"],
-        "quotemark": [true, "single", "jsx-double"],
+        "quotemark": [false, "single", "jsx-double"],
         "semicolon": [true, "never"],
         "trailing-comma": [false],
         "triple-equals": [true, "allow-null-check"],

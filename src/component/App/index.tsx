@@ -35,7 +35,7 @@ function App({ chatStore }: IAllStore) {
         window.socket.emit('init_socket', mockUserInfo.id)
         // 监听broadcast事件， 获取 服务器 消息
         const { pushMessage } = chatStore
-        window.socket.on('broadcast', (message: IChatStore.ImessageItem) => {
+        window.socket.on('message', (message: IChatStore.ImessageItem) => {
             if (pushMessage) {
                 pushMessage(message)
             }

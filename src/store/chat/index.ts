@@ -1,9 +1,9 @@
 import { observable, action, computed } from 'mobx'
-import axios from 'axios'
 import {get} from 'lodash'
 import {stringify} from 'qs'
 
 import { StoreExt } from '../../utils/reactExt'
+import req from '../../utils/request'
 
 export class ChatStore extends StoreExt {
     @observable messageList: IChatStore.ImessageItem[] = []
@@ -13,6 +13,12 @@ export class ChatStore extends StoreExt {
 
     @observable page: number = 1
     @observable size: number = 10
+
+    @observable hasSetScrollBottom: boolean = false
+
+    @computed get currentChatItem() {
+        return this.chatList.find(item => item.id === this.currentChatId)
+    }
 
     @computed get lastMessage() {
         return get(this.messageList, `[${this.messageList.length - 1}].message`)
@@ -32,7 +38,7 @@ export class ChatStore extends StoreExt {
      * 获取聊天人列表
      */
     fetchChatList = async (id: number) => {
-        const { data } = await axios.get(`/chat_list/${id}`)
+        const { data } = await req.get(`/chat_list/${id}`)
         this.save({
             chatList: data
         })
@@ -45,13 +51,14 @@ export class ChatStore extends StoreExt {
             page: this.page,
             size:this.size
         }
-        const { data } = await axios.get(`/message/group/${this.currentChatId}?${stringify(query)}`)
+        const { data } = await req.get(`/message/group/${this.currentChatId}?${stringify(query)}`)
         // 倒序
         const reverseData = data.reverse()
         // 插到前面
         const messageList = [...reverseData, ...this.messageList]
         this.save({
-            messageList
+            messageList,
+            hasSetScrollBottom: true
         })
     }
 }

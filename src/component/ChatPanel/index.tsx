@@ -6,34 +6,39 @@ import { get, isEmpty } from 'lodash'
 import styles from './index.module.scss'
 import Editor from './Editor'
 import MessageItem from './MessageItem'
+import Header from './Header'
+import Footer from './Footer'
 
-interface IStoreProps {
-    chatStore?: IChatStore.ChatStore
-}
-
-function ChatPanel({ chatStore }: IStoreProps) {
+function ChatPanel({ chatStore, userStore }: IAllStore) {
     const {
         messageList,
         inputValue,
         save,
         fetchHistoryList,
-        currentChatId
+        currentChatId,
+        hasSetScrollBottom
     } = chatStore
     let { page } = chatStore
+
+    const { isLogin } = userStore
+
     const listWrapper: any = useRef()
 
     // 初始化滚动条滑到底部
     useEffect(() => {
         const messageListNode = get(listWrapper, 'current.children')
         const lastNodeIndex = get(messageListNode, 'length')
-        if(!isEmpty(messageListNode)) {
+        if (!isEmpty(messageListNode)) {
             messageListNode[lastNodeIndex - 1].scrollIntoView()
         }
+    }, [hasSetScrollBottom])
+
+    useEffect(() => {
         listWrapper.current.addEventListener('scroll', onScroll)
         return function cleanup() {
             listWrapper.current.removeEventListener('scroll', onScroll)
         }
-    }, [messageList])
+    }, [])
 
     const onScroll = e => {
         const { scrollTop } = e.srcElement
@@ -69,6 +74,7 @@ function ChatPanel({ chatStore }: IStoreProps) {
 
     return (
         <div className={styles.chatPanel}>
+            <Header />
             <div className={styles.content} ref={listWrapper}>
                 {messageList &&
                     messageList.map(item => {
@@ -76,21 +82,27 @@ function ChatPanel({ chatStore }: IStoreProps) {
                         return <MessageItem key={id} content={item} />
                     })}
             </div>
-            <div className={styles.editor}>
-                <Editor
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    onKeyDown={sendMsg}
-                />
-            </div>
+
+            {isLogin ? (
+                <div className={styles.editor}>
+                    <Editor
+                        value={inputValue}
+                        onChange={handleInputChange}
+                        onKeyDown={sendMsg}
+                    />
+                </div>
+            ) : (
+                <Footer />
+            )}
         </div>
     )
 }
 
 export default inject(
-    ({ chatStore }: IAllStore): IStoreProps => {
+    ({ chatStore, userStore }: IAllStore): IAllStore => {
         return {
-            chatStore
+            chatStore,
+            userStore
         }
     }
 )(observer(ChatPanel))
