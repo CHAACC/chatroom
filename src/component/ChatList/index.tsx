@@ -21,9 +21,7 @@ function ChatList({ chatStore }: IStoreProps) {
     } = chatStore
 
     async function fetchChatAndMessageList() {
-        const userInfoString = localStorage.getItem('chatroom_user_info')
-        const { id } = JSON.parse(userInfoString)
-        const data = await fetchChatList(id)
+        const data = await fetchChatList()
         save({
             currentChatId: data[0].id
         })

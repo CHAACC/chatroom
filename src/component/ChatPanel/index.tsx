@@ -16,11 +16,12 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         save,
         fetchHistoryList,
         currentChatId,
-        hasSetScrollBottom
+        hasSetScrollBottom,
+        setInputValue
     } = chatStore
     let { page } = chatStore
 
-    const { isLogin } = userStore
+    const { isLogin, userInfo } = userStore
 
     const listWrapper: any = useRef()
 
@@ -51,13 +52,11 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         }
     }
     const sendMsg = e => {
-        const userInfoString = localStorage.getItem('chatroom_user_info')
-        const { id } = JSON.parse(userInfoString)
         if (e.keyCode === 13) {
             e.preventDefault()
-            window.socket.emit('sendMsg', {
-                message: inputValue,
-                from_user_id: id,
+            window.socket.emit('message', {
+                message: chatStore.inputValue,
+                from_user_id: userInfo.id,
                 to_group_id: currentChatId
             })
             save({
@@ -67,9 +66,7 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
     }
 
     const handleInputChange = (value: string) => {
-        save({
-            inputValue: value
-        })
+        setInputValue(value)
     }
 
     return (
@@ -79,7 +76,7 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
                 {messageList &&
                     messageList.map(item => {
                         const { id } = item
-                        return <MessageItem key={id} content={item} />
+                        return <MessageItem key={id} content={item} currentUserId={userInfo.id}/>
                     })}
             </div>
 

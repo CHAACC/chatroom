@@ -22,24 +22,6 @@ function App({ chatStore }: IAllStore) {
     function init() {
         // 挂载到window
         window.socket = io()
-        // 先直接把用户信息存到localStorage
-        const key = 'chatroom_user_info'
-        const userInfo = localStorage.getItem(key)
-        const mockUserInfo = {
-            id: 1
-        }
-        if (!userInfo) {
-            localStorage.setItem(key, JSON.stringify(mockUserInfo))
-        }
-        // 初始化socket信息
-        window.socket.emit('init_socket', mockUserInfo.id)
-        // 监听broadcast事件， 获取 服务器 消息
-        const { pushMessage } = chatStore
-        window.socket.on('message', (message: IChatStore.ImessageItem) => {
-            if (pushMessage) {
-                pushMessage(message)
-            }
-        })
     }
     return (
         <div className={styles.bg}>

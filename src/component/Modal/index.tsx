@@ -20,8 +20,11 @@ class Modal extends Component<IProps> {
     state = {
         visible: false
     }
+
     componentWillUnmount() {
-        document.body.removeChild(this.el)
+        if (document.body.querySelector('#modalRoot')) {
+            document.body.removeChild(this.el)
+        }
     }
 
     componentDidUpdate() {

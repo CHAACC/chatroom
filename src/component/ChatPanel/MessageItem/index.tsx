@@ -4,14 +4,12 @@ import classname from 'classname'
 
 interface IProps {
     content?: IChatStore.ImessageItem
-    createdAt?: string
+    currentUserId?: number
 }
 
-const MessageItem = ({ content, createdAt }: IProps) => {
+const MessageItem = ({ content, currentUserId }: IProps) => {
     const { from_user_id, message, username, created_at } = content
-    const userInfoString = localStorage.getItem('chatroom_user_info')
-    const { id } = JSON.parse(userInfoString)
-    const isSelf = from_user_id === id
+    const isSelf = from_user_id === currentUserId
     return (
         <div
             className={classname(styles.wrapper, {

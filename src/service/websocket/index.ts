@@ -1,17 +1,29 @@
-import io from 'socket.io-client'
+import socketIO from 'socket.io-client'
+import * as store from '../../store/index'
+import { message } from 'antd'
+
+const SOCKETURL = 'http://127.0.0.1:7001/'
 // 稍微封装一下socket.io， 然后暴露出去。
 const socket = function() {
-    const _io = io('http://127.0.0.1:7001/')
-    _io.on('connect', function() {
-        console.log('连接成功')
+    const io = socketIO(`${SOCKETURL}?token=${localStorage.getItem('token')}`)
+    io.on('connect', function() {
+        message.success('socket连接成功')
     })
-    _io.on('disconnect', function() {
-        console.log('断开连级')
+    io.on('disconnect', function() {
+        message.warning('socket断开连接')
     })
-    _io.on('online', (msg: string) => {
-        console.log(msg)
+    io.on('auth', (data) => {
+        const { login, userInfo = {} } = data
+        if (!login) {
+            message.error('token过期，请重新登录')
+        }
+        store.userStore.setLoginStatus(login)
+        store.userStore.setUserInfo(userInfo)
     })
-    return _io
+    io.on('message', (msg: IChatStore.ImessageItem) => {
+        store.chatStore.pushMessage(msg)
+    })
+    return io
 }
 
 export default socket

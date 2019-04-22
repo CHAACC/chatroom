@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { inject } from 'mobx-react'
 import { observer } from 'mobx-react-lite'
 
 import styles from './index.module.scss'
 import Login from '../../Login'
 
-function Footer({ userStore }: IAllStore) {
-    const [loginModalVisible, setLoginModalVisible] = useState<boolean>(false)
+function Footer({ userStore: {
+    loginModalVisible, setLoginModalVisible
+} }: IAllStore) {
     return (
         <footer className={styles.footer}>
             游客朋友你好，请

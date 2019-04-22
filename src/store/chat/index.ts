@@ -25,6 +25,11 @@ export class ChatStore extends StoreExt {
     }
 
     @action
+    setInputValue = (value: string) => {
+        this.inputValue = value
+    }
+
+    @action
     pushMessage = (message: IChatStore.ImessageItem) => {
         this.messageList.push(message)
     }
@@ -37,8 +42,8 @@ export class ChatStore extends StoreExt {
     /**
      * 获取聊天人列表
      */
-    fetchChatList = async (id: number) => {
-        const { data } = await req.get(`/chat_list/${id}`)
+    fetchChatList = async () => {
+        const { data } = await req.get<IChatStore.chatItem[]>(`/chat_list`)
         this.save({
             chatList: data
         })
@@ -51,7 +56,7 @@ export class ChatStore extends StoreExt {
             page: this.page,
             size:this.size
         }
-        const { data } = await req.get(`/message/group/${this.currentChatId}?${stringify(query)}`)
+        const { data } = await req.get<IChatStore.ImessageItem[]>(`/message/group/${this.currentChatId}?${stringify(query)}`)
         // 倒序
         const reverseData = data.reverse()
         // 插到前面

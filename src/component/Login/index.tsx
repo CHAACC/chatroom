@@ -20,9 +20,10 @@ function Login({
 }: IProps) {
     const handleSubmit = e => {
         e.preventDefault()
-        validateFields((err, values) => {
+        validateFields(async (err, values) => {
             if (!err) {
-                login(values)
+                await login(values)
+                onClose()
             }
         })
     }
