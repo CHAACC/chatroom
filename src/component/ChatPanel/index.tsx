@@ -15,13 +15,12 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         inputValue,
         save,
         fetchHistoryList,
-        currentChatId,
         hasSetScrollBottom,
         setInputValue
     } = chatStore
     let { page } = chatStore
 
-    const { isLogin, userInfo } = userStore
+    const { isLogin } = userStore
 
     const listWrapper: any = useRef()
 
@@ -52,6 +51,8 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         }
     }
     const sendMsg = e => {
+        const { userInfo } = userStore
+        const { currentChatId } = chatStore
         if (e.keyCode === 13) {
             e.preventDefault()
             window.socket.emit('message', {
@@ -76,7 +77,13 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
                 {messageList &&
                     messageList.map(item => {
                         const { id } = item
-                        return <MessageItem key={id} content={item} currentUserId={userInfo.id}/>
+                        return (
+                            <MessageItem
+                                key={id}
+                                content={item}
+                                currentUserId={userStore.userInfo.id}
+                            />
+                        )
                     })}
             </div>
 
