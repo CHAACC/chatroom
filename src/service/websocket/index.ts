@@ -12,7 +12,7 @@ const socket = function() {
     io.on('disconnect', function() {
         message.warning('socket断开连接')
     })
-    io.on('auth', (data) => {
+    io.on('auth', data => {
         const { login, userInfo = {} } = data
         if (!login) {
             message.error('token过期，请重新登录')
@@ -22,6 +22,13 @@ const socket = function() {
     })
     io.on('message', (msg: IChatStore.ImessageItem) => {
         store.chatStore.pushMessage(msg)
+    })
+    io.on('logout', () => {
+        store.userStore.setLoginStatus(false)
+        store.userStore.setUserInfo({})
+        localStorage.removeItem('token')
+        store.chatStore.fetchChatList()
+        message.success('您已退出登录')
     })
     return io
 }

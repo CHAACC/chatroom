@@ -6,8 +6,7 @@ import { get } from 'lodash'
 const instance = axios.create({
     timeout: 1000,
     headers: {
-        'x-csrf-token': Cookies.get('csrfToken'),
-        'token': localStorage.getItem('token')
+        'x-csrf-token': Cookies.get('csrfToken')
     }
 })
 

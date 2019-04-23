@@ -6,4 +6,5 @@ export interface UserStore extends UserStoreModel {}
 
 interface IUserInfo {
     id?: number
+    username?: string
 }

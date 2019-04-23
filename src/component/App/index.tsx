@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { inject } from 'mobx-react'
 import { observer } from 'mobx-react-lite'
 
+import Sider from '../Sider'
 import ChatPanel from '../ChatPanel'
 import ChatList from '../ChatList'
 import styles from './index.module.scss'
@@ -14,7 +15,6 @@ declare global {
 }
 
 function App({ chatStore }: IAllStore) {
-
     useEffect(() => {
         init()
     }, [])
@@ -27,7 +27,7 @@ function App({ chatStore }: IAllStore) {
         <div className={styles.bg}>
             <div className={styles.app}>
                 <div className={styles.layout}>
-                    <div className={styles.sider} />
+                    <Sider />
                     <ChatList />
                     <ChatPanel />
                 </div>

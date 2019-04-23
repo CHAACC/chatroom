@@ -1,6 +1,6 @@
 .chatList {
-    width: 250px;
-    background-color: rgba(74, 144, 226, .5);
+    width: 200px;
+    background-color: rgba(74, 144, 226, .4);
     color: #fff;
 
     .chatItem {
@@ -9,7 +9,7 @@
         cursor: pointer;
 
         &.current {
-            background-color: rgba(74, 144, 226, .4);
+            background-color: rgba(74, 144, 226, .2);
         }
 
         >div:nth-of-type(1) {

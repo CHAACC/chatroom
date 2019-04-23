@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
-import { Form, Icon, Input, Button, Checkbox } from 'antd'
+import { Form, Icon, Input, Button, Radio } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
+import { RadioChangeEvent } from 'antd/lib/radio'
 import { inject } from 'mobx-react'
 
 import styles from './index.module.scss'
 import Modal from '../Modal'
+
+const RadioButton = Radio.Button
+const RadioGroup = Radio.Group
 
 interface IProps extends IAllStore {
     form: WrappedFormUtils
@@ -12,23 +16,49 @@ interface IProps extends IAllStore {
     onClose?: () => void
 }
 
+const typeMap = {
+    1: {
+        usernamePlaceholder: '用户名',
+        passwordPlaceholder: '密码',
+        buttonText: '登录'
+    },
+    2: {
+        usernamePlaceholder: '用户名即昵称，暂不支持修改',
+        passwordPlaceholder: '密码暂不支持修改',
+        buttonText: '注册'
+    }
+}
+
 function Login({
     visible,
     onClose,
     form: { getFieldDecorator, validateFields },
-    userStore: { login }
+    userStore: { login },
+    chatStore: { fetchChatList }
 }: IProps) {
+    const [type, setType] = useState<'1' | '2'>('1')
+
     const handleSubmit = e => {
         e.preventDefault()
         validateFields(async (err, values) => {
             if (!err) {
-                await login(values)
+                await login(values, type)
                 onClose()
             }
         })
     }
+    const onRadioChange = (e: RadioChangeEvent) => {
+        setType(e.target.value)
+    }
     return (
         <Modal visible={visible} onClose={onClose}>
+            <div className={styles.header}>
+                <RadioGroup onChange={onRadioChange} value={type}>
+                    <RadioButton value="1">登录</RadioButton>
+                    <RadioButton value="2">注册</RadioButton>
+                </RadioGroup>
+            </div>
+
             <div className={styles.content}>
                 <Form onSubmit={handleSubmit} style={{ width: '100%' }}>
                     <Form.Item>
@@ -43,11 +73,11 @@ function Login({
                             <Input
                                 prefix={
                                     <Icon
-                                        type='user'
+                                        type="user"
                                         style={{ color: 'rgba(0,0,0,.25)' }}
                                     />
                                 }
-                                placeholder='用户名'
+                                placeholder={typeMap[type].usernamePlaceholder}
                             />
                         )}
                     </Form.Item>
@@ -63,22 +93,22 @@ function Login({
                             <Input
                                 prefix={
                                     <Icon
-                                        type='lock'
+                                        type="lock"
                                         style={{ color: 'rgba(0,0,0,.25)' }}
                                     />
                                 }
-                                type='password'
-                                placeholder='密码'
+                                type="password"
+                                placeholder={typeMap[type].passwordPlaceholder}
                             />
                         )}
                     </Form.Item>
                     <Form.Item>
                         <Button
-                            type='primary'
-                            htmlType='submit'
+                            type="primary"
+                            htmlType="submit"
                             style={{ width: '100%' }}
                         >
-                            登录
+                            {typeMap[type].buttonText}
                         </Button>
                     </Form.Item>
                 </Form>

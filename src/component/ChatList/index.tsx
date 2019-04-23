@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { inject } from 'mobx-react'
 import classname from 'classname'
 import { observer } from 'mobx-react-lite'
+import { get } from 'lodash'
 
 import styles from './index.module.scss'
 
@@ -23,7 +24,7 @@ function ChatList({ chatStore }: IStoreProps) {
     async function fetchChatAndMessageList() {
         const data = await fetchChatList()
         save({
-            currentChatId: data[0].id
+            currentChatId: get(data, '[0].id')
         })
         // 获取历史消息
         fetchHistoryList()
