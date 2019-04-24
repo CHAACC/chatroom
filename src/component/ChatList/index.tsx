@@ -8,9 +8,6 @@ import styles from './index.module.scss'
 
 function ChatList({ chatStore, userStore }: IAllStore) {
     const {
-        save,
-        fetchChatList,
-        fetchHistoryList,
         chatList,
         onSelectChat,
         currentChatId,

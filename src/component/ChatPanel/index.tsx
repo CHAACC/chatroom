@@ -13,7 +13,6 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
     const {
         messageList,
         inputValue,
-        save,
         fetchHistoryList,
         hasSetScrollBottom,
         setInputValue
@@ -56,13 +55,11 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
 
     const onScroll = async e => {
         const { scrollTop, scrollHeight, clientHeight } = e.srcElement
-        const { isEndPage } = chatStore
+        const { isEndPage, setPage } = chatStore
         let { page } = chatStore
         setCurrentScorllHeight(scrollHeight)
         if (scrollTop === 0 && scrollHeight !== clientHeight && !isEndPage) {
-            save({
-                page: ++page
-            })
+            setPage(++page)
             // 获取历史消息
             await fetchHistoryList()
             setShouldLoadNewMessageList(true)
@@ -78,9 +75,7 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
                 from_user_id: userInfo.id,
                 to_group_id: currentChatId
             })
-            save({
-                inputValue: ''
-            })
+            setInputValue('')
         }
     }
 

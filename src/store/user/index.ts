@@ -2,10 +2,9 @@ import { observable, action, runInAction } from 'mobx'
 import { message } from 'antd'
 
 import req from '../../utils/request'
-import { StoreExt } from '../../utils/reactExt'
 import chatStore from '../chat'
 
-export class UserStore extends StoreExt {
+export class UserStore {
     @observable isLogin: boolean = false
     @observable loginModalVisible: boolean = false
     @observable userInfo: IUserStore.IUserInfo = {}

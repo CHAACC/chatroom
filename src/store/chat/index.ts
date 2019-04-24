@@ -2,10 +2,9 @@ import { observable, action, computed, runInAction } from 'mobx'
 import { isEmpty } from 'lodash'
 import { stringify } from 'qs'
 
-import { StoreExt } from '../../utils/reactExt'
 import req from '../../utils/request'
 
-export class ChatStore extends StoreExt {
+export class ChatStore {
     @observable messageList: IChatStore.ImessageItem[] = []
     @observable chatList: IChatStore.chatItem[] = []
     @observable currentChatId: number = null
@@ -37,6 +36,11 @@ export class ChatStore extends StoreExt {
     changeCurrentChatId = (id: number) => {
         this.currentChatId = id
         this.hasSetScrollBottom = false
+    }
+
+    @action
+    setPage = (page: number) => {
+        this.page = page
     }
 
     @action
