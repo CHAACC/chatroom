@@ -1,6 +1,8 @@
 import socketIO from 'socket.io-client'
-import * as store from '../store/index'
 import { message } from 'antd'
+
+import * as store from '../store/index'
+import { formatTime } from '../utils/time'
 
 const SOCKETURL = 'http://127.0.0.1:7001/'
 
@@ -31,18 +33,22 @@ function socket() {
             setScrollBottomFlag,
             setChatList
         } = store.chatStore
-        const { to_group_id, from_user_id, username, message } = msgItem
+        const { to_group_id, from_user_id, username, message: msg } = msgItem
         if (to_group_id === currentChatId) {
             // 当前会话，更新消息列表
-            pushMessage(msgItem)
+            pushMessage({
+                ...msgItem,
+                created_at: formatTime(msgItem.created_at)
+            })
             // 滚动置底
             setScrollBottomFlag()
         }
+        // 更新左侧会话列表最新消息
         setChatList(to_group_id, {
             lastest_message_info: {
                 from_user_id,
                 from_user_name: username,
-                last_message: message
+                last_message: msg
             }
         })
     })
