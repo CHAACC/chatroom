@@ -44,13 +44,13 @@ function Login({
         validateFields(async (err, values) => {
             if (!err) {
                 const { login } = userStore
-                const { fetchChatAndMessageList } = chatStore
+                const { fetchChatListAndFirstMessageList } = chatStore
                 const userInfo = await login(values, type)
                 // 登录成功后要初始化socket
                 window.socket.emit('init', {
                     userid: userInfo.id
                 })
-                fetchChatAndMessageList()
+                fetchChatListAndFirstMessageList()
                 //
                 onClose()
             }

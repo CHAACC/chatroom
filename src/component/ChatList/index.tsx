@@ -6,23 +6,26 @@ import { get } from 'lodash'
 
 import styles from './index.module.scss'
 
-function ChatList({ chatStore, userStore }: IAllStore) {
+function ChatList({ chatStore }: IAllStore) {
     const {
         chatList,
         onSelectChat,
         currentChatId,
-        fetchChatAndMessageList
+        fetchChatListAndFirstMessageList
     } = chatStore
-    const { isLogin } = userStore
 
     useEffect(() => {
-        fetchChatAndMessageList()
+        fetchChatListAndFirstMessageList()
     }, [])
 
     return (
         <div className={styles.chatList}>
             {chatList.map(item => {
-                const { id, name } = item
+                const {
+                    id,
+                    name,
+                    lastest_message_info: { from_user_name, last_message }
+                } = item
                 return (
                     <div
                         key={id}
@@ -34,7 +37,9 @@ function ChatList({ chatStore, userStore }: IAllStore) {
                         <div />
                         <div>
                             <span>{name}</span>
-                            <span>{item.last_message}</span>
+                            <span>
+                                {from_user_name}:{last_message}
+                            </span>
                         </div>
                     </div>
                 )

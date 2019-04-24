@@ -14,27 +14,21 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         messageList,
         inputValue,
         fetchHistoryList,
-        hasSetScrollBottom,
-        setInputValue
+        setInputValue,
+        firstFetchMessages,
+        scrollBottomFlag
     } = chatStore
 
     const { isLogin } = userStore
 
     const listWrapper = useRef<HTMLDivElement>()
 
+    // 滚动分页设置scrollTop用到
     const [currentScrollHeight, setCurrentScorllHeight] = useState(0)
+    // 是否加载新消息，没数据了就否
     const [shouldLoadNewMessageList, setShouldLoadNewMessageList] = useState(
         false
     )
-
-    // 初始化滚动条滑到底部
-    useEffect(() => {
-        const messageListNode = get(listWrapper, 'current.children')
-        const lastNodeIndex = get(messageListNode, 'length')
-        if (!isEmpty(messageListNode)) {
-            messageListNode[lastNodeIndex - 1].scrollIntoView()
-        }
-    }, [hasSetScrollBottom])
 
     // 监听滚动
     useEffect(() => {
@@ -43,6 +37,17 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
             listWrapper.current.removeEventListener('scroll', onScroll)
         }
     }, [])
+
+    // 滚动条滑到底部，消息列表更新和发消息时候触发
+    useEffect(() => {
+        const messageListNode = get(listWrapper, 'current.children')
+        if (!isEmpty(messageListNode)) {
+            setTimeout(() => {
+                const lastNodeIndex = get(messageListNode, 'length')
+                messageListNode[lastNodeIndex - 1].scrollIntoView()
+            }, 100)
+        }
+    }, [scrollBottomFlag, firstFetchMessages])
 
     // componentDidUpdate 翻页设置scrollTop
     useEffect(() => {

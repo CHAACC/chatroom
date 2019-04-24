@@ -13,6 +13,12 @@ interface ImessageItem {
     username?: string
 }
 
+interface ILastMessageInfo {
+    from_user_id?: number
+    from_user_name?: string
+    last_message?: string
+}
+
 interface chatItem {
     created_at?: string
     creator_id?: number
@@ -20,4 +26,6 @@ interface chatItem {
     id?: number
     name?: string
     last_message?: string
+    from_user_name?: string
+    lastest_message_info?: ILastMessageInfo
 }

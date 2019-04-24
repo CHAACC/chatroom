@@ -24,8 +24,27 @@ function socket() {
         store.userStore.setLoginStatus(login)
         store.userStore.setUserInfo(userInfo)
     })
-    io.on('message', (msg: IChatStore.ImessageItem) => {
-        store.chatStore.pushMessage(msg)
+    io.on('message', (msgItem: IChatStore.ImessageItem) => {
+        const {
+            pushMessage,
+            currentChatId,
+            setScrollBottomFlag,
+            setChatList
+        } = store.chatStore
+        const { to_group_id, from_user_id, username, message } = msgItem
+        if (to_group_id === currentChatId) {
+            // 当前会话，更新消息列表
+            pushMessage(msgItem)
+            // 滚动置底
+            setScrollBottomFlag()
+        }
+        setChatList(to_group_id, {
+            lastest_message_info: {
+                from_user_id,
+                from_user_name: username,
+                last_message: message
+            }
+        })
     })
     return io
 }

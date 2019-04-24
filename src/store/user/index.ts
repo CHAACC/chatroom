@@ -47,7 +47,7 @@ export class UserStore {
             this.userInfo = {}
         })
         localStorage.removeItem('token')
-        chatStore.fetchChatAndMessageList()
+        chatStore.fetchChatListAndFirstMessageList()
         message.success('您已退出登录')
     }
 }
