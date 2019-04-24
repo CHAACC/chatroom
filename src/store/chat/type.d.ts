@@ -19,4 +19,5 @@ interface chatItem {
     group_notice?: string
     id?: number
     name?: string
+    last_message?: string
 }

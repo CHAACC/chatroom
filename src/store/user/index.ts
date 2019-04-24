@@ -1,6 +1,7 @@
 import { observable, action, runInAction } from 'mobx'
-import req from '../../utils/request'
+import { message } from 'antd'
 
+import req from '../../utils/request'
 import { StoreExt } from '../../utils/reactExt'
 import chatStore from '../chat'
 
@@ -39,11 +40,15 @@ export class UserStore extends StoreExt {
         })
     }
 
-    @action
     logout = async () => {
-        window.socket.emit('logout', {
-            userid: this.userInfo.id
+        await req.post(`/logout/${this.userInfo.id}`)
+        runInAction(() => {
+            this.isLogin = false
+            this.userInfo = {}
         })
+        localStorage.removeItem('token')
+        chatStore.fetchChatList()
+        message.success('您已退出登录')
     }
 }
 

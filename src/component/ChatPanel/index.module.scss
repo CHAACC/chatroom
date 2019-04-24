@@ -5,12 +5,11 @@
     background-color: hsla(0,0%,95%, .8);
 
     .content {
-        flex: 1;
-        height: 200px;
+        flex: 1;;
         overflow-y: auto;
     }
 
     .editor {
-        height: 200px;
+        height: 50px;
     }
 }

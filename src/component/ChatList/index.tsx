@@ -16,9 +16,8 @@ function ChatList({ chatStore }: IStoreProps) {
         fetchChatList,
         fetchHistoryList,
         chatList,
-        changeCurrentChatId,
-        currentChatId,
-        lastMessage
+        onSelectChat,
+        currentChatId
     } = chatStore
 
     async function fetchChatAndMessageList() {
@@ -41,7 +40,7 @@ function ChatList({ chatStore }: IStoreProps) {
                 return (
                     <div
                         key={id}
-                        onClick={() => changeCurrentChatId(id)}
+                        onClick={() => onSelectChat(id)}
                         className={classname(styles.chatItem, {
                             [styles.current]: currentChatId === id
                         })}
@@ -49,7 +48,7 @@ function ChatList({ chatStore }: IStoreProps) {
                         <div />
                         <div>
                             <span>{name}</span>
-                            <span>{lastMessage}</span>
+                            <span>{item.last_message}</span>
                         </div>
                     </div>
                 )

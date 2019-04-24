@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { inject } from 'mobx-react'
 import { observer } from 'mobx-react-lite'
 import { get, isEmpty } from 'lodash'
@@ -18,11 +18,15 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         hasSetScrollBottom,
         setInputValue
     } = chatStore
-    let { page } = chatStore
 
     const { isLogin } = userStore
 
-    const listWrapper: any = useRef()
+    const listWrapper = useRef<HTMLDivElement>()
+
+    const [currentScrollHeight, setCurrentScorllHeight] = useState(0)
+    const [shouldLoadNewMessageList, setShouldLoadNewMessageList] = useState(
+        false
+    )
 
     // 初始化滚动条滑到底部
     useEffect(() => {
@@ -33,6 +37,7 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         }
     }, [hasSetScrollBottom])
 
+    // 监听滚动
     useEffect(() => {
         listWrapper.current.addEventListener('scroll', onScroll)
         return function cleanup() {
@@ -40,14 +45,27 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         }
     }, [])
 
-    const onScroll = e => {
-        const { scrollTop } = e.srcElement
-        if (scrollTop === 0) {
+    // componentDidUpdate 翻页设置scrollTop
+    useEffect(() => {
+        setShouldLoadNewMessageList(false)
+        const { scrollHeight } = listWrapper.current
+        if (screenTop === 0 && shouldLoadNewMessageList) {
+            listWrapper.current.scrollTop = scrollHeight - currentScrollHeight
+        }
+    })
+
+    const onScroll = async e => {
+        const { scrollTop, scrollHeight, clientHeight } = e.srcElement
+        const { isEndPage } = chatStore
+        let { page } = chatStore
+        setCurrentScorllHeight(scrollHeight)
+        if (scrollTop === 0 && scrollHeight !== clientHeight && !isEndPage) {
             save({
                 page: ++page
             })
             // 获取历史消息
-            fetchHistoryList()
+            await fetchHistoryList()
+            setShouldLoadNewMessageList(true)
         }
     }
     const sendMsg = e => {
