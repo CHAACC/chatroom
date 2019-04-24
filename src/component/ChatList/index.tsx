@@ -6,28 +6,17 @@ import { get } from 'lodash'
 
 import styles from './index.module.scss'
 
-interface IStoreProps {
-    chatStore?: IChatStore.ChatStore
-}
-
-function ChatList({ chatStore }: IStoreProps) {
+function ChatList({ chatStore, userStore }: IAllStore) {
     const {
         save,
         fetchChatList,
         fetchHistoryList,
         chatList,
         onSelectChat,
-        currentChatId
+        currentChatId,
+        fetchChatAndMessageList
     } = chatStore
-
-    async function fetchChatAndMessageList() {
-        const data = await fetchChatList()
-        save({
-            currentChatId: get(data, '[0].id')
-        })
-        // 获取历史消息
-        fetchHistoryList()
-    }
+    const { isLogin } = userStore
 
     useEffect(() => {
         fetchChatAndMessageList()
@@ -58,9 +47,10 @@ function ChatList({ chatStore }: IStoreProps) {
 }
 
 export default inject(
-    ({ chatStore }: IAllStore): IStoreProps => {
+    ({ chatStore, userStore }: IAllStore): IAllStore => {
         return {
-            chatStore
+            chatStore,
+            userStore
         }
     }
 )(observer(ChatList))

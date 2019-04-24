@@ -58,7 +58,7 @@ export class ChatStore extends StoreExt {
         return data
     }
 
-    // 获取历史消息列表
+    // 获取历史消息列表,登录和切换对话changeChat=true
     fetchHistoryList = async (changeChat?: boolean) => {
         const query = {
             page: this.page,
@@ -84,6 +84,13 @@ export class ChatStore extends StoreExt {
             this.messageList = messageList
             this.hasSetScrollBottom = true
         })
+    }
+
+    fetchChatAndMessageList = async () => {
+        await this.fetchChatList()
+        this.currentChatId = this.chatList[0].id
+        // 获取历史消息
+        await this.fetchHistoryList(true)
     }
 }
 

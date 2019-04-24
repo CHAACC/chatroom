@@ -3,6 +3,7 @@ import { Form, Icon, Input, Button, Radio } from 'antd'
 import { WrappedFormUtils } from 'antd/lib/form/Form'
 import { RadioChangeEvent } from 'antd/lib/radio'
 import { inject } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import styles from './index.module.scss'
 import Modal from '../Modal'
@@ -33,8 +34,8 @@ function Login({
     visible,
     onClose,
     form: { getFieldDecorator, validateFields },
-    userStore: { login },
-    chatStore: { fetchChatList }
+    userStore,
+    chatStore
 }: IProps) {
     const [type, setType] = useState<'1' | '2'>('1')
 
@@ -42,7 +43,15 @@ function Login({
         e.preventDefault()
         validateFields(async (err, values) => {
             if (!err) {
-                await login(values, type)
+                const { login } = userStore
+                const { fetchChatAndMessageList } = chatStore
+                const userInfo = await login(values, type)
+                // 登录成功后要初始化socket
+                window.socket.emit('init', {
+                    userid: userInfo.id
+                })
+                fetchChatAndMessageList()
+                //
                 onClose()
             }
         })
@@ -119,4 +128,4 @@ function Login({
 
 // export default Form.create<IProps>()(Login)
 
-export default inject(store => store)(Form.create<IProps>()(Login))
+export default inject(store => store)(Form.create<IProps>()(observer(Login)))

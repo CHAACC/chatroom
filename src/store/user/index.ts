@@ -38,6 +38,7 @@ export class UserStore extends StoreExt {
             this.isLogin = true
             this.userInfo = userInfo
         })
+        return userInfo
     }
 
     logout = async () => {
@@ -47,7 +48,7 @@ export class UserStore extends StoreExt {
             this.userInfo = {}
         })
         localStorage.removeItem('token')
-        chatStore.fetchChatList()
+        chatStore.fetchChatAndMessageList()
         message.success('您已退出登录')
     }
 }
