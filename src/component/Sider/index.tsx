@@ -1,23 +1,46 @@
-import React from 'react'
-import { inject, observer } from 'mobx-react'
+import React, { useState } from 'react'
+import { inject } from 'mobx-react'
 import { Icon } from 'antd'
+import { observer } from 'mobx-react-lite'
 
 import styles from './index.module.scss'
+import { SERVER_URL } from '../../constants'
+import UserInfoSetting from '../UserInfoSetting'
 
 function Sider({ userStore }: IAllStore) {
+    const [modalVisible, setModalVisible] = useState(false)
     const {
-        userInfo: { username }
+        userInfo,
+        userInfo: { username, avatar },
+        isLogin,
+        setUserAvatar
     } = userStore
     return (
         <div className={styles.sider}>
-            <div className={styles.top}>{username}</div>
-            <div className={styles.bottom}>
-                <Icon
-                    type="poweroff"
-                    className={styles.icon}
-                    onClick={() => userStore.logout()}
+            {isLogin && (
+                <div
+                    onClick={() => setModalVisible(true)}
+                    className={styles.avartar}
+                    style={{
+                        backgroundImage: avatar && `url(${SERVER_URL}${avatar})`
+                    }}
                 />
+            )}
+            <div className={styles.bottom}>
+                {isLogin && (
+                    <Icon
+                        type="poweroff"
+                        className={styles.icon}
+                        onClick={() => userStore.logout()}
+                    />
+                )}
             </div>
+            <UserInfoSetting
+                visible={modalVisible}
+                onClose={() => setModalVisible(false)}
+                userInfo={userInfo}
+                handleUploadDone={setUserAvatar}
+            />
         </div>
     )
 }

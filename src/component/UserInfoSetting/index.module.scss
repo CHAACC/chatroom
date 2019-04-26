@@ -1,0 +1,12 @@
+.userInfoSetting{
+    width: 400px;
+    height: 500px;
+    padding: 10px;
+    :global .ant-row{
+        margin-bottom: 20px;
+    }
+    .inputWrapper{
+        margin-bottom: 10px;
+    }
+    
+}

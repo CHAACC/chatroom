@@ -11,6 +11,7 @@ interface ImessageItem {
     to_group_id?: number
     from_user_id?: number
     username?: string
+    avatar?: string
 }
 
 interface ILastMessageInfo {

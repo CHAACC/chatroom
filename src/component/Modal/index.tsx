@@ -29,7 +29,9 @@ class Modal extends Component<IProps> {
 
     componentDidUpdate() {
         if (!this.state.visible) {
-            document.body.removeChild(this.el)
+            if (document.body.querySelector('#modalRoot')) {
+                document.body.removeChild(this.el)
+            }
         } else {
             if (!document.body.querySelector('#modalRoot')) {
                 document.body.appendChild(this.el)

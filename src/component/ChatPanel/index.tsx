@@ -19,7 +19,7 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         scrollBottomFlag
     } = chatStore
 
-    const { isLogin } = userStore
+    const { isLogin, userInfo } = userStore
 
     const listWrapper = useRef<HTMLDivElement>()
 
@@ -71,7 +71,6 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         }
     }
     const sendMsg = e => {
-        const { userInfo } = userStore
         const { currentChatId } = chatStore
         if (e.keyCode === 13) {
             e.preventDefault()
@@ -100,6 +99,7 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
                                 key={id}
                                 content={item}
                                 currentUserId={userStore.userInfo.id}
+                                userInfo={userInfo}
                             />
                         )
                     })}

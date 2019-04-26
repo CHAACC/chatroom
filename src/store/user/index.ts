@@ -15,6 +15,11 @@ export class UserStore {
     }
 
     @action
+    setUserAvatar = (avatar: string) => {
+        this.userInfo.avatar = avatar
+    }
+
+    @action
     setLoginModalVisible = (visible: boolean) => {
         this.loginModalVisible = visible
     }
