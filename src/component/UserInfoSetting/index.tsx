@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Row, Button, Input } from 'antd'
 
 import styles from './index.module.scss'
@@ -10,14 +10,19 @@ interface IProps {
     onClose?: () => void
     userInfo?: IUserStore.IUserInfo
     handleUploadDone?: (url: string) => void
+    updateUserInfo?: (params: IUserStore.IUpdateUserInfoParams) => void
 }
 
 function UserInfoSetting({
     visible,
     onClose,
     userInfo: { avatar, id },
-    handleUploadDone
+    handleUploadDone,
+    updateUserInfo
 }: IProps) {
+    const [username, setUsername] = useState('')
+    const [oldpsw, setOldPsw] = useState('')
+    const [newpsw, setNewpsw] = useState('')
     return (
         <Modal visible={visible} onClose={onClose}>
             <div className={styles.userInfoSetting}>
@@ -34,19 +39,35 @@ function UserInfoSetting({
                 <Row>
                     <h4>修改用户名</h4>
                     <div className={styles.inputWrapper}>
-                        <Input placeholder="用户名" />
+                        <Input
+                            placeholder="用户名"
+                            value={username}
+                            onChange={e => setUsername(e.target.value)}
+                        />
                     </div>
-                    <Button>修改用户名</Button>
+                    <Button onClick={() => updateUserInfo({ username })}>
+                        修改用户名
+                    </Button>
                 </Row>
                 <Row>
                     <h4>修改密码</h4>
                     <div className={styles.inputWrapper}>
-                        <Input placeholder="旧密码" />
+                        <Input
+                            type="password"
+                            placeholder="旧密码"
+                            onChange={e => setOldPsw(e.target.value)}
+                        />
                     </div>
                     <div className={styles.inputWrapper}>
-                        <Input placeholder="新密码" />
+                        <Input
+                            type="password"
+                            placeholder="新密码"
+                            onChange={e => setNewpsw(e.target.value)}
+                        />
                     </div>
-                    <Button>修改密码</Button>
+                    <Button onClick={() => updateUserInfo({ oldpsw, newpsw })}>
+                        修改密码
+                    </Button>
                 </Row>
             </div>
         </Modal>

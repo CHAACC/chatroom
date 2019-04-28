@@ -9,3 +9,9 @@ interface IUserInfo {
     username?: string
     avatar?: string
 }
+
+interface IUpdateUserInfoParams {
+    username?: string
+    oldpsw?: string
+    newpsw?: string
+}

@@ -1,5 +1,6 @@
 import { observable, action, runInAction } from 'mobx'
 import { message } from 'antd'
+import { isEmpty } from 'lodash'
 
 import req from '../../utils/request'
 import chatStore from '../chat'
@@ -54,6 +55,28 @@ export class UserStore {
         localStorage.removeItem('token')
         chatStore.fetchChatListAndFirstMessageList()
         message.success('您已退出登录')
+    }
+
+    updateUserInfo = async (params: IUserStore.IUpdateUserInfoParams) => {
+        const { username, oldpsw, newpsw } = params
+        if (oldpsw || newpsw) {
+            if (isEmpty(oldpsw) || isEmpty(newpsw)) {
+                message.error('新密码和旧密码都不能为空')
+            }
+        } else {
+            if (isEmpty(username)) {
+                message.error('用户名不能为空')
+            }
+        }
+        await req.patch(`/user/${this.userInfo.id}`, {
+            username,
+            oldpsw,
+            newpsw
+        })
+        runInAction(() => {
+            this.userInfo.username = username
+        })
+        message.success('修改成功')
     }
 }
 

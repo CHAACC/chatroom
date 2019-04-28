@@ -13,8 +13,10 @@ function Sider({ userStore }: IAllStore) {
         userInfo,
         userInfo: { username, avatar },
         isLogin,
-        setUserAvatar
+        setUserAvatar,
+        updateUserInfo
     } = userStore
+
     return (
         <div className={styles.sider}>
             {isLogin && (
@@ -40,6 +42,7 @@ function Sider({ userStore }: IAllStore) {
                 onClose={() => setModalVisible(false)}
                 userInfo={userInfo}
                 handleUploadDone={setUserAvatar}
+                updateUserInfo={updateUserInfo}
             />
         </div>
     )
