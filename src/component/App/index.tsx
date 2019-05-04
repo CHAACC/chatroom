@@ -15,7 +15,7 @@ declare global {
     }
 }
 
-function App({ chatStore }: IAllStore) {
+function App({ globalStore }: IAllStore) {
     useEffect(() => {
         init()
     }, [])
@@ -27,7 +27,10 @@ function App({ chatStore }: IAllStore) {
 
     return (
         <div className={styles.bg}>
-            <div className={styles.app}>
+            <div
+                className={styles.app}
+                onClick={() => globalStore.setOnlineListVisible(false)}
+            >
                 <div className={styles.layout}>
                     <Sider />
                     <ChatList />
@@ -40,9 +43,10 @@ function App({ chatStore }: IAllStore) {
 }
 
 export default inject(
-    ({ chatStore }: IAllStore): IAllStore => {
+    ({ chatStore, globalStore }: IAllStore): IAllStore => {
         return {
-            chatStore
+            chatStore,
+            globalStore
         }
     }
 )(observer(App))

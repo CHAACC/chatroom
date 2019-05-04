@@ -14,7 +14,10 @@ function Header({ chatStore, globalStore }: IAllStore) {
         <header className={styles.header}>
             <div>{title}</div>
             <Icon
-                onClick={() => setOnlineListVisible(true)}
+                onClick={e => {
+                    e.stopPropagation()
+                    setOnlineListVisible(true)
+                }}
                 className={styles.icon}
                 theme="filled"
                 type="appstore"

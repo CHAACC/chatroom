@@ -24,7 +24,7 @@ function OnlineList({
     return (
         onlineListVisible && (
             <div
-                onClick={() => setOnlineListVisible(false)}
+                onClick={e => e.stopPropagation()}
                 className={styles.onlineList}
             >
                 123
