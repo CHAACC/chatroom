@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { inject } from 'mobx-react'
 import classname from 'classname'
 import { observer } from 'mobx-react-lite'

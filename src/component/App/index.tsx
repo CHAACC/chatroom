@@ -7,6 +7,7 @@ import ChatPanel from '../ChatPanel'
 import ChatList from '../ChatList'
 import styles from './index.module.scss'
 import io from '../../websocket'
+import OnlineList from '../OnlineList'
 
 declare global {
     interface Window {
@@ -23,6 +24,7 @@ function App({ chatStore }: IAllStore) {
         // 挂载到window
         window.socket = io()
     }
+
     return (
         <div className={styles.bg}>
             <div className={styles.app}>
@@ -31,6 +33,7 @@ function App({ chatStore }: IAllStore) {
                     <ChatList />
                     <ChatPanel />
                 </div>
+                <OnlineList />
             </div>
         </div>
     )
