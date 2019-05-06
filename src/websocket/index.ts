@@ -52,6 +52,12 @@ function socket() {
             }
         })
     })
+    io.on('group_online_members', ({ list, group_id }) => {
+        const { currentChatId } = store.chatStore
+        if (group_id === currentChatId) {
+            store.globalStore.setOnlineList(list)
+        }
+    })
     return io
 }
 

@@ -6,31 +6,35 @@ import { Icon } from 'antd'
 
 import styles from './index.module.scss'
 
-function Header({ chatStore, globalStore }: IAllStore) {
+function Header({ chatStore, globalStore, userStore }: IAllStore) {
     const { currentChatItem } = chatStore
     const { setOnlineListVisible } = globalStore
+    const { isLogin } = userStore
     const title = get(currentChatItem, 'name')
     return (
         <header className={styles.header}>
             <div>{title}</div>
-            <Icon
-                onClick={e => {
-                    e.stopPropagation()
-                    setOnlineListVisible(true)
-                }}
-                className={styles.icon}
-                theme="filled"
-                type="appstore"
-            />
+            {isLogin && (
+                <Icon
+                    onClick={e => {
+                        e.stopPropagation()
+                        setOnlineListVisible(true)
+                    }}
+                    className={styles.icon}
+                    theme="filled"
+                    type="appstore"
+                />
+            )}
         </header>
     )
 }
 
 export default inject(
-    ({ chatStore, globalStore }: IAllStore): IAllStore => {
+    ({ chatStore, globalStore, userStore }: IAllStore): IAllStore => {
         return {
             chatStore,
-            globalStore
+            globalStore,
+            userStore
         }
     }
 )(observer(Header))

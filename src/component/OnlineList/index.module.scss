@@ -1,7 +1,35 @@
 .onlineList{
     position: absolute;
-    background-color: #ffff00;
     height: 100%;
     right: 0;
-    width: 200px;
+    width: 250px;
+    background-color: hsla(0,0%,98%,.95);
+    header {
+        display: flex;
+        height: 50px;
+        border-bottom: 1px solid rgba(209, 209, 209, 0.6);
+        justify-content: center;
+        align-items: center;
+        font-weight: 600;
+    }
+    .listWrapper{
+        padding: 10px;
+        .title {
+            font-weight: 600;
+            
+        }
+        .item {
+            display: flex;
+            height: 40px;
+            align-items: center;
+            .avatar{
+                width: 30px;
+                height: 30px;
+                background-size: 100% 100%;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+        }
+    }
+    
 }
