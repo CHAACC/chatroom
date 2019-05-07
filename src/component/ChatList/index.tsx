@@ -2,17 +2,18 @@ import React, { useEffect } from 'react'
 import { inject } from 'mobx-react'
 import classname from 'classname'
 import { observer } from 'mobx-react-lite'
-import { get } from 'lodash'
 
 import styles from './index.module.scss'
+import SearchHeader from './SearchHeader'
 
-function ChatList({ chatStore }: IAllStore) {
+function ChatList({ chatStore, userStore }: IAllStore) {
     const {
         chatList,
         onSelectChat,
         currentChatId,
         fetchChatListAndFirstMessageList
     } = chatStore
+    const { isLogin } = userStore
 
     useEffect(() => {
         fetchChatListAndFirstMessageList()
@@ -20,6 +21,7 @@ function ChatList({ chatStore }: IAllStore) {
 
     return (
         <div className={styles.chatList}>
+            {isLogin && <SearchHeader />}
             {chatList.map(item => {
                 const {
                     id,

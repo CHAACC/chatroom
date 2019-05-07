@@ -27,7 +27,6 @@ function OnlineList({
             })
         }
     }, [onlineListVisible])
-    console.log(onlineList)
     return (
         onlineListVisible && (
             <div
