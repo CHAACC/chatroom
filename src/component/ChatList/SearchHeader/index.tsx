@@ -1,22 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Icon } from 'antd'
 import { stringify } from 'qs'
+import { inject } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import styles from './index.module.scss'
 import SearchList from '../SearchList'
 import req from '../../../utils/request'
+import { IResult, IStoreProps } from './type'
 
-function SearchHeader() {
+function SearchHeader({
+    searchListVisible,
+    setSearchListVisible
+}: IStoreProps) {
     const [isInputFocus, setIsInputFocus] = useState(false)
+    const [result, setResult] = useState<IResult>(null)
+
+    useEffect(() => {
+        setResult(null)
+    }, [searchListVisible])
     const onKeyDown = async e => {
         if (e.keyCode === 13) {
             e.preventDefault()
-            const ret = await req.get(
+            setSearchListVisible(true)
+            const { data } = await req.get(
                 `/search_all?${stringify({
                     keyword: e.target.value
                 })}`
             )
-            console.log(ret)
+            setResult(data)
         }
     }
     return (
@@ -27,24 +39,32 @@ function SearchHeader() {
                     <input
                         onKeyDown={onKeyDown}
                         onBlur={() => setIsInputFocus(false)}
-                        onFocus={() => setIsInputFocus(true)}
+                        onFocus={e => setIsInputFocus(true)}
+                        onClick={e => e.stopPropagation()}
                         type="text"
                         placeholder="搜索群组/用户"
                     />
                 </div>
-                {!isInputFocus && (
-                    <span className={styles.addIcon}>
-                        <Icon type="usergroup-add" />
-                    </span>
-                )}
+
+                <span className={styles.addIcon}>
+                    {!isInputFocus && <Icon type="usergroup-add" />}
+                </span>
             </div>
-            {isInputFocus && (
+            {searchListVisible && result && (
                 <div className={styles.searchList}>
-                    <SearchList />
+                    <SearchList result={result} />
                 </div>
             )}
         </div>
     )
 }
 
-export default SearchHeader
+export default inject((store: IAllStore) => {
+    const {
+        globalStore: { searchListVisible, setSearchListVisible }
+    } = store
+    return {
+        searchListVisible,
+        setSearchListVisible
+    }
+})(observer(SearchHeader))

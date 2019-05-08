@@ -18,6 +18,12 @@ export class GlobalStore {
     setOnlineList = (list: IGlobalStore.onlineListItem[]) => {
         this.onlineList = list
     }
+
+    @observable searchListVisible: boolean
+    @action
+    setSearchListVisible = (visible: boolean) => {
+        this.searchListVisible = visible
+    }
 }
 
 export default new GlobalStore()

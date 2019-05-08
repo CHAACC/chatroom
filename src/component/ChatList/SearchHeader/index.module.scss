@@ -35,7 +35,9 @@
                 font-size: 14px;
                 color: #333;
                 outline: none;
+                transition: all 0.3s;
                 &:focus {
+                    width: 120%;
                     background-color: hsla(0,0%,100%,.9);
                 }
             }

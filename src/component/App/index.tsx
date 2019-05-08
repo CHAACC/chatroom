@@ -25,12 +25,15 @@ function App({ globalStore }: IAllStore) {
         window.socket = io()
     }
 
+    const closeGlobalLayer = () => {
+        const { setOnlineListVisible, setSearchListVisible } = globalStore
+        setOnlineListVisible(false)
+        setSearchListVisible(false)
+    }
+
     return (
         <div className={styles.bg}>
-            <div
-                className={styles.app}
-                onClick={() => globalStore.setOnlineListVisible(false)}
-            >
+            <div className={styles.app} onClick={() => closeGlobalLayer()}>
                 <div className={styles.layout}>
                     <Sider />
                     <ChatList />
