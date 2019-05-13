@@ -31,7 +31,7 @@ function socket() {
             pushMessage,
             currentChatId,
             setScrollBottomFlag,
-            setChatList
+            setGroups
         } = store.chatStore
         const { to_group_id, from_user_id, username, message: msg } = msgItem
         if (to_group_id === currentChatId) {
@@ -44,7 +44,7 @@ function socket() {
             setScrollBottomFlag()
         }
         // 更新左侧会话列表最新消息
-        setChatList(to_group_id, {
+        setGroups(to_group_id, {
             lastest_message_info: {
                 from_user_id,
                 from_user_name: username,

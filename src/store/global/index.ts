@@ -2,9 +2,6 @@ import { observable, action, runInAction } from 'mobx'
 import { message } from 'antd'
 import { isEmpty } from 'lodash'
 
-import req from '../../utils/request'
-import chatStore from '../chat'
-
 export class GlobalStore {
     @observable onlineList: IGlobalStore.onlineListItem[] = []
     @observable onlineListVisible: boolean = false

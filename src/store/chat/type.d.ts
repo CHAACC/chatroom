@@ -20,13 +20,26 @@ interface ILastMessageInfo {
     last_message?: string
 }
 
-interface chatItem {
+interface IGroup {
+    id?: number
+    name?: string
     created_at?: string
     creator_id?: number
     group_notice?: string
-    id?: number
-    name?: string
     last_message?: string
     from_user_name?: string
     lastest_message_info?: ILastMessageInfo
+}
+
+interface IFriend {
+    id: number
+    name: string
+    created_at: string
+    avatar: string
+    status: 0 | 1
+}
+
+interface IChatItem {
+    groups?: IGroup[]
+    friends?: IFriend[]
 }
