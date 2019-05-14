@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Icon } from 'antd'
+import { Icon, message } from 'antd'
 import { stringify } from 'qs'
 import { inject } from 'mobx-react'
 import { observer } from 'mobx-react-lite'
@@ -7,11 +7,12 @@ import { observer } from 'mobx-react-lite'
 import styles from './index.module.scss'
 import SearchList from '../SearchList'
 import req from '../../../utils/request'
-import { IResult, IStoreProps } from './type'
+import { IResult, IStoreProps, IUser } from './type'
 
 function SearchHeader({
     searchListVisible,
-    setSearchListVisible
+    setSearchListVisible,
+    fetchChatList
 }: IStoreProps) {
     const [isInputFocus, setIsInputFocus] = useState(false)
     const [result, setResult] = useState<IResult>(null)
@@ -19,6 +20,7 @@ function SearchHeader({
     useEffect(() => {
         setResult(null)
     }, [searchListVisible])
+
     const onKeyDown = async e => {
         if (e.keyCode === 13) {
             e.preventDefault()
@@ -31,6 +33,12 @@ function SearchHeader({
             setResult(data)
         }
     }
+    const addUser = async (user: IUser) => {
+        const { id } = user
+        await req.post(`/add_friend/${id}`)
+        message.success('添加好友成功')
+        fetchChatList()
+    }
     return (
         <div className={styles.searchHeader}>
             <div className={styles.main}>
@@ -39,7 +47,7 @@ function SearchHeader({
                     <input
                         onKeyDown={onKeyDown}
                         onBlur={() => setIsInputFocus(false)}
-                        onFocus={e => setIsInputFocus(true)}
+                        onFocus={() => setIsInputFocus(true)}
                         onClick={e => e.stopPropagation()}
                         type="text"
                         placeholder="搜索群组/用户"
@@ -52,7 +60,7 @@ function SearchHeader({
             </div>
             {searchListVisible && result && (
                 <div className={styles.searchList}>
-                    <SearchList result={result} />
+                    <SearchList result={result} addUser={addUser} />
                 </div>
             )}
         </div>
@@ -61,10 +69,12 @@ function SearchHeader({
 
 export default inject((store: IAllStore) => {
     const {
-        globalStore: { searchListVisible, setSearchListVisible }
+        globalStore: { searchListVisible, setSearchListVisible },
+        chatStore: { fetchChatList }
     } = store
     return {
         searchListVisible,
-        setSearchListVisible
+        setSearchListVisible,
+        fetchChatList
     }
 })(observer(SearchHeader))

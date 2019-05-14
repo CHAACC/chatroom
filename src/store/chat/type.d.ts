@@ -8,7 +8,7 @@ interface ImessageItem {
     id?: number
     message?: string
     created_at?: string
-    to_group_id?: number
+    to_group_id?: string
     from_user_id?: number
     username?: string
     avatar?: string
@@ -22,6 +22,7 @@ interface ILastMessageInfo {
 
 interface IGroup {
     id?: number
+    to_group_id?: string
     name?: string
     created_at?: string
     creator_id?: number

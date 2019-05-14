@@ -19,7 +19,7 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         scrollBottomFlag
     } = chatStore
 
-    const { isLogin, userInfo } = userStore
+    const { isLogin } = userStore
 
     const listWrapper = useRef<HTMLDivElement>()
 
@@ -71,9 +71,10 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         }
     }
     const sendMsg = e => {
-        const { currentChatId } = chatStore
         if (e.keyCode === 13) {
             e.preventDefault()
+            const { currentChatId } = chatStore
+            const { userInfo } = userStore
             window.socket.emit('message', {
                 message: chatStore.inputValue,
                 from_user_id: userInfo.id,
@@ -99,7 +100,7 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
                                 key={id}
                                 content={item}
                                 currentUserId={userStore.userInfo.id}
-                                userInfo={userInfo}
+                                userInfo={userStore.userInfo}
                             />
                         )
                     })}

@@ -1,6 +1,7 @@
 export interface IStoreProps {
     searchListVisible?: boolean
     setSearchListVisible?: (visible: boolean) => void
+    fetchChatList?: () => void
 }
 
 export interface IUser {

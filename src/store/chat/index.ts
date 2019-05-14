@@ -16,11 +16,12 @@ export class ChatStore {
      */
     fetchHistoryList = async (changeChat?: boolean) => {
         const query = {
+            type: this.currentChatType,
             page: this.page,
             size: this.size
         }
-        const { data } = await req.get<IChatStore.ImessageItem[]>(
-            `/message/group/${this.currentChatId}?${stringify(query)}`
+        const { data = [] } = await req.get<IChatStore.ImessageItem[]>(
+            `/message/${this.currentChatId}?${stringify(query)}`
         )
         // 倒序
         const reverseData = data.reverse()
@@ -53,48 +54,56 @@ export class ChatStore {
      */
     fetchChatListAndFirstMessageList = async () => {
         await this.fetchChatList()
-        this.currentChatId = this.chatList[0].id
+        this.currentChatId = this.groups[0].to_group_id
         // 获取历史消息
         await this.fetchHistoryList(true)
     }
 
-    // 会话列表
-    @observable chatList: IChatStore.chatItem[] = []
+    // 群组列表
+    @observable groups: IChatStore.IGroup[] = []
+    // 朋友列表
+    @observable friends: IChatStore.IFriend[] = []
+
     /**
      * 获取聊天人列表
      */
     fetchChatList = async () => {
-        const { data } = await req.get<IChatStore.chatItem[]>(`/chat_list`)
+        const { data } = await req.get<IChatStore.IChatItem>(`/chat_list`)
+        const { groups, friends } = data
         runInAction(() => {
-            this.chatList = data
+            this.groups = groups
+            this.friends = friends
         })
         return data
     }
-    @action setChatList = (groupId: number, params: IChatStore.chatItem) => {
-        const oldItem = this.chatList.find(item => item.id === groupId)
-        const oldItemIndex = this.chatList.findIndex(
-            item => item.id === groupId
+
+    @action setGroups = (groupId: string, params: IChatStore.IGroup) => {
+        const oldItem = this.groups.find(item => item.to_group_id === groupId)
+        const oldItemIndex = this.groups.findIndex(
+            item => item.to_group_id === groupId
         )
 
         const newItem = {
             ...oldItem,
             ...params
         }
-        this.chatList.splice(oldItemIndex, 1, newItem)
+        this.groups.splice(oldItemIndex, 1, newItem)
     }
 
     // 当前会话
-    @observable currentChatId: number = null
+    @observable currentChatId: number | string = null
+    @observable currentChatType: 0 | 1 = 0 // 0:群聊 1:私聊
     @computed get currentChatItem() {
-        return this.chatList.find(item => item.id === this.currentChatId)
+        return this.groups.find(item => item.id === this.currentChatId)
     }
-    @action changeCurrentChatId = (id: number) => {
+    @action changeCurrentChatId = (id: number | string, type: 0 | 1) => {
+        this.currentChatType = type
         this.currentChatId = id
         this.firstFetchMessages = false
     }
     @action
-    onSelectChat = (id: number) => {
-        this.changeCurrentChatId(id)
+    onSelectChat = (id: number | string, type: 0 | 1) => {
+        this.changeCurrentChatId(id, type)
         this.page = 1
         this.isEndPage = false
         this.fetchHistoryList(true)
