@@ -19,13 +19,11 @@ function ChatList({ chatStore, userStore }: IAllStore) {
     useEffect(() => {
         fetchChatListAndFirstMessageList()
     }, [])
-
     return (
         <div className={styles.chatList}>
             {isLogin && <SearchHeader />}
             {groups.map(item => {
                 const {
-                    id,
                     to_group_id,
                     name,
                     lastest_message_info: { from_user_name, last_message }
@@ -42,7 +40,7 @@ function ChatList({ chatStore, userStore }: IAllStore) {
                         <div>
                             <span>{name}</span>
                             <span>
-                                {from_user_name}:{last_message}
+                                {from_user_name}：{last_message}
                             </span>
                         </div>
                     </div>
@@ -50,7 +48,12 @@ function ChatList({ chatStore, userStore }: IAllStore) {
             })}
             {friends &&
                 friends.map(item => {
-                    const { id, avatar, name } = item
+                    const {
+                        id,
+                        avatar,
+                        name,
+                        lastest_message_info: { last_message }
+                    } = item
                     return (
                         <div
                             key={id}
@@ -64,9 +67,7 @@ function ChatList({ chatStore, userStore }: IAllStore) {
                             </div>
                             <div>
                                 <span>{name}</span>
-                                {/* <span>
-                                {from_user_name}:{last_message}
-                            </span> */}
+                                <span>{last_message}</span>
                             </div>
                         </div>
                     )

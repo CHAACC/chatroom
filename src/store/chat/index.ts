@@ -77,17 +77,33 @@ export class ChatStore {
         return data
     }
 
-    @action setGroups = (groupId: string, params: IChatStore.IGroup) => {
-        const oldItem = this.groups.find(item => item.to_group_id === groupId)
-        const oldItemIndex = this.groups.findIndex(
-            item => item.to_group_id === groupId
-        )
-
+    /**
+     * 监听收到消息设置左侧最新消息
+     */
+    @action setChatMsgInfo = (
+        id: string | number,
+        params: IChatStore.ILastMessageInfo
+    ) => {
+        let oldItem: IChatStore.IGroup | IChatStore.IFriend,
+            oldItemIndex: number
+        if (typeof id === 'string') {
+            oldItem = this.groups.find(item => item.to_group_id === id)
+            oldItemIndex = this.groups.findIndex(
+                item => item.to_group_id === id
+            )
+        } else {
+            oldItem = this.friends.find(item => item.id === id)
+            oldItemIndex = this.groups.findIndex(item => item.id === id)
+        }
         const newItem = {
             ...oldItem,
-            ...params
+            lastest_message_info: params
         }
-        this.groups.splice(oldItemIndex, 1, newItem)
+        if (typeof id === 'string') {
+            this.groups.splice(oldItemIndex, 1, newItem)
+        } else {
+            this.friends.splice(oldItemIndex, 1, newItem)
+        }
     }
 
     // 当前会话

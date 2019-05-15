@@ -44,7 +44,9 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         if (!isEmpty(messageListNode)) {
             setTimeout(() => {
                 const lastNodeIndex = get(messageListNode, 'length')
-                messageListNode[lastNodeIndex - 1].scrollIntoView()
+                if (lastNodeIndex) {
+                    messageListNode[lastNodeIndex - 1].scrollIntoView()
+                }
             }, 100)
         }
     }, [scrollBottomFlag, firstFetchMessages])
@@ -73,12 +75,14 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
     const sendMsg = e => {
         if (e.keyCode === 13) {
             e.preventDefault()
-            const { currentChatId } = chatStore
+            const { currentChatId, currentChatType } = chatStore
             const { userInfo } = userStore
             window.socket.emit('message', {
+                type: currentChatType,
                 message: chatStore.inputValue,
                 from_user_id: userInfo.id,
-                to_group_id: currentChatId
+                to_group_id: currentChatId,
+                to_user_id: currentChatId
             })
             setInputValue('')
         }

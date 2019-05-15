@@ -26,15 +26,31 @@ function socket() {
         store.userStore.setLoginStatus(login)
         store.userStore.setUserInfo(userInfo)
     })
+
     io.on('message', (msgItem: IChatStore.ImessageItem) => {
         const {
             pushMessage,
             currentChatId,
             setScrollBottomFlag,
-            setGroups
+            setChatMsgInfo
         } = store.chatStore
-        const { to_group_id, from_user_id, username, message: msg } = msgItem
-        if (to_group_id === currentChatId) {
+        const { userInfo } = store.userStore
+        const {
+            type,
+            to_user_id,
+            to_group_id,
+            from_user_id,
+            username,
+            message: msg
+        } = msgItem
+        // 私聊自己也会收到消息
+        const tempId =
+            type === 0
+                ? to_group_id
+                : from_user_id === userInfo.id
+                ? to_user_id
+                : from_user_id
+        if (tempId === currentChatId) {
             // 当前会话，更新消息列表
             pushMessage({
                 ...msgItem,
@@ -44,14 +60,13 @@ function socket() {
             setScrollBottomFlag()
         }
         // 更新左侧会话列表最新消息
-        setGroups(to_group_id, {
-            lastest_message_info: {
-                from_user_id,
-                from_user_name: username,
-                last_message: msg
-            }
+        setChatMsgInfo(tempId, {
+            from_user_id,
+            from_user_name: username,
+            last_message: msg
         })
     })
+
     io.on('group_online_members', ({ list, group_id }) => {
         const { currentChatId } = store.chatStore
         if (group_id === currentChatId) {
