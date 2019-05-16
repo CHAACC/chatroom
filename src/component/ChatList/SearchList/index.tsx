@@ -2,13 +2,14 @@ import React from 'react'
 import { Empty, Icon } from 'antd'
 
 import styles from './index.module.scss'
-import { IResult, IUser } from '../SearchHeader/type'
+import { IResult, IUser, IGroup } from '../SearchHeader/type'
 
 interface IProps {
     result: IResult
     addUser: (item: IUser) => void
+    addGroup: (item: IGroup) => void
 }
-function SearchList({ result, addUser }: IProps) {
+function SearchList({ result, addUser, addGroup }: IProps) {
     const { users, groups } = result
     return (
         <div className={styles.searchList} onClick={e => e.stopPropagation()}>
@@ -45,7 +46,7 @@ function SearchList({ result, addUser }: IProps) {
                                         <div>
                                             <div>{name}</div>
                                         </div>
-                                        <div>
+                                        <div onClick={() => addGroup(item)}>
                                             <Icon type="plus" />
                                         </div>
                                     </div>

@@ -23,11 +23,7 @@ function ChatList({ chatStore, userStore }: IAllStore) {
         <div className={styles.chatList}>
             {isLogin && <SearchHeader />}
             {groups.map(item => {
-                const {
-                    to_group_id,
-                    name,
-                    lastest_message_info: { from_user_name, last_message }
-                } = item
+                const { to_group_id, name, lastest_message_info } = item
                 return (
                     <div
                         key={to_group_id}
@@ -39,21 +35,19 @@ function ChatList({ chatStore, userStore }: IAllStore) {
                         <div />
                         <div>
                             <span>{name}</span>
-                            <span>
-                                {from_user_name}：{last_message}
-                            </span>
+                            {lastest_message_info && (
+                                <span>
+                                    {lastest_message_info.from_user_name}：
+                                    {lastest_message_info.last_message}
+                                </span>
+                            )}
                         </div>
                     </div>
                 )
             })}
             {friends &&
                 friends.map(item => {
-                    const {
-                        id,
-                        avatar,
-                        name,
-                        lastest_message_info: { last_message }
-                    } = item
+                    const { id, avatar, name, lastest_message_info } = item
                     return (
                         <div
                             key={id}
@@ -67,7 +61,11 @@ function ChatList({ chatStore, userStore }: IAllStore) {
                             </div>
                             <div>
                                 <span>{name}</span>
-                                <span>{last_message}</span>
+                                {lastest_message_info && (
+                                    <span>
+                                        {lastest_message_info.last_message}
+                                    </span>
+                                )}
                             </div>
                         </div>
                     )

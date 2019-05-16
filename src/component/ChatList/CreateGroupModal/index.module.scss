@@ -1,0 +1,11 @@
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    flex: auto;
+    height: 120px;
+    > button {
+        flex: none;
+    }
+}

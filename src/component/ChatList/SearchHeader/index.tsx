@@ -7,7 +7,8 @@ import { observer } from 'mobx-react-lite'
 import styles from './index.module.scss'
 import SearchList from '../SearchList'
 import req from '../../../utils/request'
-import { IResult, IStoreProps, IUser } from './type'
+import { IResult, IStoreProps, IUser, IGroup } from './type'
+import CreateGroupModal from '../CreateGroupModal'
 
 function SearchHeader({
     searchListVisible,
@@ -16,6 +17,9 @@ function SearchHeader({
 }: IStoreProps) {
     const [isInputFocus, setIsInputFocus] = useState(false)
     const [result, setResult] = useState<IResult>(null)
+    const [createGroupModalVisible, setCreateGroupModalVisible] = useState(
+        false
+    )
 
     useEffect(() => {
         setResult(null)
@@ -33,12 +37,34 @@ function SearchHeader({
             setResult(data)
         }
     }
+
     const addUser = async (user: IUser) => {
         const { id } = user
-        await req.post(`/add_friend/${id}`)
+        await req.post('/user_user', {
+            friend_id: id
+        })
         message.success('添加好友成功')
         fetchChatList()
     }
+
+    const addGroup = async (group: IGroup) => {
+        const { to_group_id } = group
+        await req.post('/group_user', {
+            to_group_id
+        })
+        message.success('加群成功')
+        fetchChatList()
+    }
+
+    const createGroup = async (groupName: string) => {
+        await req.post('/group', {
+            name: groupName
+        })
+        message.success('创建成功')
+        setCreateGroupModalVisible(false)
+        fetchChatList()
+    }
+
     return (
         <div className={styles.searchHeader}>
             <div className={styles.main}>
@@ -55,14 +81,28 @@ function SearchHeader({
                 </div>
 
                 <span className={styles.addIcon}>
-                    {!isInputFocus && <Icon type="usergroup-add" />}
+                    {!isInputFocus && (
+                        <Icon
+                            type="usergroup-add"
+                            onClick={() => setCreateGroupModalVisible(true)}
+                        />
+                    )}
                 </span>
             </div>
             {searchListVisible && result && (
                 <div className={styles.searchList}>
-                    <SearchList result={result} addUser={addUser} />
+                    <SearchList
+                        result={result}
+                        addUser={addUser}
+                        addGroup={addGroup}
+                    />
                 </div>
             )}
+            <CreateGroupModal
+                visible={createGroupModalVisible}
+                onClose={() => setCreateGroupModalVisible(false)}
+                createGroup={createGroup}
+            />
         </div>
     )
 }

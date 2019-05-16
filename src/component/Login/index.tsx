@@ -126,6 +126,4 @@ function Login({
     )
 }
 
-// export default Form.create<IProps>()(Login)
-
 export default inject(store => store)(Form.create<IProps>()(observer(Login)))

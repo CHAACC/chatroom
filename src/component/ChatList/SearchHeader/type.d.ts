@@ -12,6 +12,7 @@ export interface IUser {
 export interface IGroup {
     id: number
     name: string
+    to_group_id: string
 }
 export interface IResult {
     users: IUser[]
