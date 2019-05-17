@@ -20,6 +20,7 @@ interface ILastMessageInfo {
     from_user_id?: number
     from_user_name?: string
     last_message?: string
+    created_at?: string
 }
 
 interface IGroup {
@@ -29,8 +30,7 @@ interface IGroup {
     created_at: string
     creator_id?: number
     group_notice?: string
-    from_user_name?: string
-    lastest_message_info?: ILastMessageInfo
+    lastest_message_info: ILastMessageInfo
 }
 
 interface IFriend {
@@ -39,10 +39,28 @@ interface IFriend {
     created_at: string
     avatar?: string
     status?: 0 | 1
-    lastest_message_info?: ILastMessageInfo
+    lastest_message_info: ILastMessageInfo
 }
 
-interface IChatItem {
-    groups?: IGroup[]
-    friends?: IFriend[]
+// 群聊或者私聊 ？代表不是共有
+interface IChat {
+    id: number
+    name: string
+    created_at: string
+    lastest_message_info: ILastMessageInfo
+    unread: number
+
+    type?: number
+
+    to_group_id?: string
+    creator_id?: number
+    group_notice?: string
+
+    avatar?: string
+    status?: 0 | 1
+}
+
+interface IChatList {
+    groups?: IChat[]
+    friends?: IChat[]
 }

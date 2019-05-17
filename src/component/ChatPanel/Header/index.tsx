@@ -7,14 +7,14 @@ import { Icon } from 'antd'
 import styles from './index.module.scss'
 
 function Header({ chatStore, globalStore, userStore }: IAllStore) {
-    const { currentChatItem } = chatStore
+    const { currentChatItem, currentChatType } = chatStore
     const { setOnlineListVisible } = globalStore
     const { isLogin } = userStore
     const title = get(currentChatItem, 'name')
     return (
         <header className={styles.header}>
             <div>{title}</div>
-            {isLogin && (
+            {isLogin && currentChatType === 0 && (
                 <Icon
                     onClick={e => {
                         e.stopPropagation()

@@ -4,6 +4,7 @@ import { isEmpty } from 'lodash'
 
 export class GlobalStore {
     @observable onlineList: IGlobalStore.onlineListItem[] = []
+    @observable offlineList: IGlobalStore.onlineListItem[] = []
     @observable onlineListVisible: boolean = false
 
     @action
@@ -14,6 +15,11 @@ export class GlobalStore {
     @action
     setOnlineList = (list: IGlobalStore.onlineListItem[]) => {
         this.onlineList = list
+    }
+
+    @action
+    setOfflineList = (list: IGlobalStore.onlineListItem[]) => {
+        this.offlineList = list
     }
 
     @observable searchListVisible: boolean

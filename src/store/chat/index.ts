@@ -60,32 +60,31 @@ export class ChatStore {
     }
 
     // 群组列表
-    @observable groups: IChatStore.IGroup[] = []
+    @observable groups: IChatStore.IChat[] = []
     // 朋友列表
-    @observable friends: IChatStore.IFriend[] = []
+    @observable friends: IChatStore.IChat[] = []
 
     /**
      * 获取聊天人列表
      */
     fetchChatList = async () => {
-        const { data } = await req.get<IChatStore.IChatItem>(`/chat_list`)
-        const { groups, friends } = data
+        const { data } = await req.get<IChatStore.IChatList>(`/chat_list`)
+        const { groups = [], friends = [] } = data
         runInAction(() => {
-            this.groups = groups
-            this.friends = friends
+            this.groups = groups.map(item => ({
+                ...item,
+                type: 0
+            }))
+            this.friends = friends.map(item => ({
+                ...item,
+                type: 1
+            }))
         })
         return data
     }
 
-    /**
-     * 监听收到消息设置左侧最新消息
-     */
-    @action setChatMsgInfo = (
-        id: string | number,
-        params: IChatStore.ILastMessageInfo
-    ) => {
-        let oldItem: IChatStore.IGroup | IChatStore.IFriend,
-            oldItemIndex: number
+    getOldItem = (id: string | number) => {
+        let oldItem: IChatStore.IChat, oldItemIndex: number
         if (typeof id === 'string') {
             oldItem = this.groups.find(item => item.to_group_id === id)
             oldItemIndex = this.groups.findIndex(
@@ -95,9 +94,36 @@ export class ChatStore {
             oldItem = this.friends.find(item => item.id === id)
             oldItemIndex = this.groups.findIndex(item => item.id === id)
         }
+        return {
+            oldItem,
+            oldItemIndex
+        }
+    }
+
+    /**
+     * 监听收到消息设置左侧最新消息
+     */
+    @action setChatMsgInfo = (
+        id: string | number,
+        params: IChatStore.ILastMessageInfo
+    ) => {
+        const { oldItem, oldItemIndex } = this.getOldItem(id)
         const newItem = {
             ...oldItem,
             lastest_message_info: params
+        }
+        if (typeof id === 'string') {
+            this.groups.splice(oldItemIndex, 1, newItem)
+        } else {
+            this.friends.splice(oldItemIndex, 1, newItem)
+        }
+    }
+
+    @action setChatUnreadCount = (id: string | number, isRead = false) => {
+        const { oldItem, oldItemIndex } = this.getOldItem(id)
+        const newItem = {
+            ...oldItem,
+            unread: isRead ? 0 : ++oldItem.unread
         }
         if (typeof id === 'string') {
             this.groups.splice(oldItemIndex, 1, newItem)
@@ -123,6 +149,8 @@ export class ChatStore {
         this.page = 1
         this.isEndPage = false
         this.fetchHistoryList(true)
+        // 清空未读
+        this.setChatUnreadCount(id, true)
     }
 
     // 输入框

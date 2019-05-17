@@ -32,7 +32,8 @@ function socket() {
             pushMessage,
             currentChatId,
             setScrollBottomFlag,
-            setChatMsgInfo
+            setChatMsgInfo,
+            setChatUnreadCount
         } = store.chatStore
         const { userInfo } = store.userStore
         const {
@@ -58,6 +59,8 @@ function socket() {
             })
             // 滚动置底
             setScrollBottomFlag()
+        } else {
+            setChatUnreadCount(tempId)
         }
         // 更新左侧会话列表最新消息
         setChatMsgInfo(tempId, {
@@ -67,10 +70,11 @@ function socket() {
         })
     })
 
-    io.on('group_online_members', ({ list, group_id }) => {
+    io.on('group_online_members', ({ onlineList, offlineList, group_id }) => {
         const { currentChatId } = store.chatStore
         if (group_id === currentChatId) {
-            store.globalStore.setOnlineList(list)
+            store.globalStore.setOnlineList(onlineList)
+            store.globalStore.setOfflineList(offlineList)
         }
     })
     return io

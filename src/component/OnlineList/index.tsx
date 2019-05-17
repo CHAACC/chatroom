@@ -7,6 +7,7 @@ import styles from './index.module.scss'
 
 interface IStoreProps {
     onlineList?: IGlobalStore.onlineListItem[]
+    offlineList?: IGlobalStore.onlineListItem[]
     onlineListVisible?: boolean
     setOnlineListVisible?: (onlineListVisible: boolean) => void
     currentChatId?: number
@@ -16,8 +17,8 @@ interface IProps extends IStoreProps {}
 
 function OnlineList({
     onlineList,
+    offlineList,
     onlineListVisible,
-    setOnlineListVisible,
     currentChatId
 }: IProps) {
     useEffect(() => {
@@ -52,6 +53,24 @@ function OnlineList({
                             </div>
                         )
                     })}
+
+                    <div className={styles.title}>
+                        离线成员 {offlineList.length}
+                    </div>
+                    {offlineList.map(item => {
+                        const { id, avatar, name } = item
+                        return (
+                            <div key={id} className={styles.item}>
+                                <div
+                                    className={styles.avatar}
+                                    style={{
+                                        backgroundImage: `url(${avatar})`
+                                    }}
+                                />
+                                <div>{name}</div>
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
         )
@@ -60,10 +79,16 @@ function OnlineList({
 
 export default inject((store: IAllStore) => {
     const { globalStore, chatStore } = store
-    const { onlineList, onlineListVisible, setOnlineListVisible } = globalStore
+    const {
+        onlineList,
+        offlineList,
+        onlineListVisible,
+        setOnlineListVisible
+    } = globalStore
     const { currentChatId } = chatStore
     return {
         onlineList,
+        offlineList,
         onlineListVisible,
         setOnlineListVisible,
         currentChatId
