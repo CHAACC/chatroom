@@ -8,8 +8,7 @@ import ChatItem from './ChatItem'
 
 function ChatList({ chatStore, userStore }: IAllStore) {
     const {
-        groups,
-        friends,
+        chatList,
         onSelectChat,
         currentChatId,
         fetchChatListAndFirstMessageList
@@ -19,7 +18,6 @@ function ChatList({ chatStore, userStore }: IAllStore) {
     useEffect(() => {
         fetchChatListAndFirstMessageList()
     }, [])
-    const chatList = [...groups, ...friends]
     return (
         <div className={styles.chatList}>
             {isLogin && <SearchHeader />}

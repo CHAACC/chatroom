@@ -1,9 +1,10 @@
-import { observable, action, computed, runInAction } from 'mobx'
+import { observable, action, computed, runInAction, toJS } from 'mobx'
 import { isEmpty } from 'lodash'
 import { stringify } from 'qs'
 
 import req from '../../utils/request'
 import { formatTime } from '../../utils/time'
+import moment from 'moment'
 
 export class ChatStore {
     // 消息列表
@@ -64,6 +65,19 @@ export class ChatStore {
     // 朋友列表
     @observable friends: IChatStore.IChat[] = []
 
+    @computed get chatList() {
+        const combineList = [...this.groups, ...this.friends]
+        return combineList.sort((a, b) => {
+            const {
+                lastest_message_info: { created_at: createdAt1 }
+            } = a
+            const {
+                lastest_message_info: { created_at: createdAt2 }
+            } = b
+            return moment(createdAt2).unix() - moment(createdAt1).unix()
+        })
+    }
+
     /**
      * 获取聊天人列表
      */
@@ -92,7 +106,7 @@ export class ChatStore {
             )
         } else {
             oldItem = this.friends.find(item => item.id === id)
-            oldItemIndex = this.groups.findIndex(item => item.id === id)
+            oldItemIndex = this.friends.findIndex(item => item.id === id)
         }
         return {
             oldItem,
@@ -136,7 +150,11 @@ export class ChatStore {
     @observable currentChatId: number | string = null
     @observable currentChatType: 0 | 1 = 0 // 0:群聊 1:私聊
     @computed get currentChatItem() {
-        return this.groups.find(item => item.id === this.currentChatId)
+        return this.chatList.find(
+            item =>
+                item.id === this.currentChatId ||
+                item.to_group_id === this.currentChatId
+        )
     }
     @action changeCurrentChatId = (id: number | string, type: 0 | 1) => {
         this.currentChatType = type

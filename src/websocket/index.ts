@@ -1,5 +1,6 @@
 import socketIO from 'socket.io-client'
 import { message } from 'antd'
+import moment from 'moment'
 
 import * as store from '../store/index'
 import { formatTime } from '../utils/time'
@@ -66,7 +67,8 @@ function socket() {
         setChatMsgInfo(tempId, {
             from_user_id,
             from_user_name: username,
-            last_message: msg
+            last_message: msg,
+            created_at: moment().format()
         })
     })
 
