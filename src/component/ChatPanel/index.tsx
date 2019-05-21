@@ -111,13 +111,11 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
             </div>
 
             {isLogin ? (
-                <div className={styles.editor}>
-                    <Editor
-                        value={inputValue}
-                        onChange={handleInputChange}
-                        onKeyDown={sendMsg}
-                    />
-                </div>
+                <Editor
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    onKeyDown={sendMsg}
+                />
             ) : (
                 <Footer />
             )}

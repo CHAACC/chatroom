@@ -1,7 +1,7 @@
 import * as React from 'react'
+import { Icon } from 'antd'
 
-import style from './index.module.scss'
-import ContentEditable from 'react-contenteditable'
+import styles from './index.module.scss'
 
 interface IProps {
     value: string
@@ -11,13 +11,16 @@ interface IProps {
 
 export default function Editor({ value, onChange, onKeyDown }: IProps) {
     return (
-        <ContentEditable
-            className={style.editor}
-            html={value}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                onChange(e.target.value)
-            }
-            onKeyDown={onKeyDown}
-        />
+        <div className={styles.editor}>
+            <Icon type="smile" style={{ fontSize: 24 }} />
+            <Icon type="crown" style={{ fontSize: 24, margin: '0 10px' }} />
+            <input
+                value={value}
+                onChange={e => onChange(e.target.value)}
+                onKeyDown={onKeyDown}
+                type="text"
+                placeholder="活成自己讨厌的样子了吗？"
+            />
+        </div>
     )
 }
