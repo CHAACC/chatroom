@@ -1,25 +1,24 @@
-.wrapper{
-    padding: 5px 10px;
+.wrapper {
     display: flex;
+    padding: 5px 10px;
     &.self {
         transform: rotateY(180deg);
         .item {
-            .avatar{
+            .avatar {
                 transform: rotateY(180deg);
             }
             .right {
-                .nicknameTime{
-                    .nickname, .createdAt{
+                .nicknameTime {
+                    .nickname,
+                    .createdAt {
                         transform: rotateY(180deg);
                     }
                 }
-                .message{
+                .message {
                     transform: rotateY(180deg);
-                    border-radius:  10px 0 10px 10px;
+                    border-radius: 10px 0 10px 10px;
                 }
-                
             }
-
         }
     }
     .item {
@@ -32,11 +31,11 @@
             background-size: 100% 100%;
         }
         .right {
-            margin-left: 10px;
             position: relative;
+            margin-left: 10px;
             .nicknameTime {
-                height: 20px;
                 display: flex;
+                height: 20px;
                 align-items: flex-end;
                 .nickname {
                     color: #333;
@@ -51,23 +50,32 @@
                 }
             }
             .message {
-                background-color: rgba($color: #fff, $alpha: 0.8);
-                max-width: 150px;
-                word-wrap:break-word;
-                word-break: break-all;
-                border-radius: 0 10px 10px 10px;
                 display: inline-block;
                 padding: 5px;
+                background-color: rgba($color: #fff, $alpha: 0.8);
+                max-width: 150px;
+                word-wrap: break-word;
+                word-break: break-all;
+                border-radius: 0 10px 10px;
+                :global .emoji {
+                    width: 30px;
+                    height: 30px;
+                    margin: 0 2px;
+                    background-repeat: no-repeat;
+                    background-size: 30px auto;
+                    background-image: url('../../../assets/emoji-sprit.png');
+                }
             }
-            .arrows{
+            .arrows {
+                position: absolute;
+                left: -7px;
+                top: 20px;
                 width: 0;
                 height: 0;
                 border-style: solid;
                 border-width: 0 7px 15px 0;
-                border-color: transparent hsla(0,0%,100%,.8) transparent transparent;
-                position: absolute;
-                left: -7px;
-                top: 20px;
+                border-color: transparent hsla(0, 0%, 100%, 0.8) transparent
+                    transparent;
             }
         }
     }

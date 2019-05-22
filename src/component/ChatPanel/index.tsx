@@ -92,6 +92,10 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         setInputValue(value)
     }
 
+    const selectEmoji = (name: string) => {
+        setInputValue(`${inputValue}#(${name})`)
+    }
+
     return (
         <div className={styles.chatPanel}>
             <Header />
@@ -115,6 +119,7 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
                     value={inputValue}
                     onChange={handleInputChange}
                     onKeyDown={sendMsg}
+                    selectEmoji={selectEmoji}
                 />
             ) : (
                 <Footer />

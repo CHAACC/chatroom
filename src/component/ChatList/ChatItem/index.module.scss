@@ -2,6 +2,7 @@
     padding: 10px;
     display: flex;
     cursor: pointer;
+    transition: all 0.5s;
 
     &.current {
         background-color: rgba(74, 144, 226, .2);

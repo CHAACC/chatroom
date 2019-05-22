@@ -3,6 +3,9 @@ import styles from './index.module.scss'
 import classname from 'classname'
 import { SERVER_URL } from '../../../constants'
 import { observer } from 'mobx-react-lite'
+import ReactHtmlParser from 'react-html-parser'
+
+import { convertExpression } from '../../../utils/emoji'
 
 interface IProps {
     content?: IChatStore.ImessageItem
@@ -37,7 +40,9 @@ const MessageItem = ({ content, currentUserId, userInfo }: IProps) => {
                         </span>
                         <span className={styles.createdAt}>{created_at}</span>
                     </div>
-                    <div className={styles.message}>{message}</div>
+                    <div className={styles.message}>
+                        {ReactHtmlParser(convertExpression(message))}
+                    </div>
                     <div className={styles.arrows} />
                 </div>
             </div>

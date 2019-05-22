@@ -1,0 +1,39 @@
+.emojiBox {
+    display: flex;
+    position: absolute;
+    left: 0;
+    bottom: 70px;
+    width: 400px;
+    border-radius: 4px;
+    background-color: #fff;
+    flex-direction: row;
+    flex-wrap: wrap;
+    animation: dh .5s;
+    > div {
+        width: 40px;
+        height: 40px;
+        padding: 5px;
+        transition: all 0.3s;
+        cursor: pointer;
+        &:hover {
+            background-color: #e3e3e3;
+        }
+        > div {
+            width: 30px;
+            height: 30px;
+            background-repeat: no-repeat;
+            background-size: 30px auto;
+            background-image: url('../../../assets/emoji-sprit.png');
+        }
+    }
+}
+
+@keyframes dh {
+    from {
+        height: 0;
+    }
+    to {
+        height: 200px;
+    }
+    
+}
