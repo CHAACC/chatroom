@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { Icon } from 'antd'
+import { Icon, Upload } from 'antd'
 
 import styles from './index.module.scss'
 import EmojiBox from '../EmojiBox'
@@ -21,6 +21,8 @@ export default function Editor({
     const [emojiVisible, setEmojiVisible] = useState(false)
     const inputRef = useRef<HTMLInputElement>()
 
+    const uploadProps = {}
+
     return (
         <div className={styles.editor}>
             <Icon
@@ -28,7 +30,14 @@ export default function Editor({
                 type="smile"
                 style={{ fontSize: 24 }}
             />
-            <Icon type="crown" style={{ fontSize: 24, margin: '0 10px' }} />
+            <Upload {...uploadProps}>
+                <Icon
+                    onClick={e => e.preventDefault()}
+                    type="file-image"
+                    style={{ fontSize: 24, margin: '0 10px' }}
+                />
+            </Upload>
+
             <input
                 ref={inputRef}
                 value={value}
