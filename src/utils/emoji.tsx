@@ -65,7 +65,7 @@ export function convertExpression(txt) {
         const index = emojiAlias.indexOf(e)
         if (index !== -1) {
             const htmlString = `<div class="emoji" style="background-position: left ${-30 *
-                index}px;" onerror="this.style.display='none'" alt="${r}">`
+                index}px;" alt="${r}">`
             return htmlString
         }
         return r

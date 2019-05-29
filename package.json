@@ -19,6 +19,7 @@
     "mobx-react": "^5.4.3",
     "mobx-react-lite": "^1.2.0",
     "node-sass": "^4.11.0",
+    "qiniu-js": "^2.5.4",
     "qs": "^6.7.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
