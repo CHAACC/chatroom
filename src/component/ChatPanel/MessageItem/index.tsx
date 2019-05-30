@@ -13,9 +13,15 @@ interface IProps {
     content?: IChatStore.ImessageItem
     currentUserId?: number
     userInfo?: IUserStore.IUserInfo
+    onClickImg?: (url: string) => void
 }
 
-const MessageItem = ({ content, currentUserId, userInfo }: IProps) => {
+const MessageItem = ({
+    content,
+    currentUserId,
+    userInfo,
+    onClickImg
+}: IProps) => {
     const {
         from_user_id,
         message,
@@ -32,12 +38,14 @@ const MessageItem = ({ content, currentUserId, userInfo }: IProps) => {
                 return ReactHtmlParser(convertExpression(message))
             case MessageType.IMAGE:
                 return (
-                    <div key={url} onClick={() => {}}>
+                    <div
+                        key={url}
+                        onClick={() => onClickImg(`//${QN_DOMAIN}/${url}`)}
+                    >
                         <img
                             height={100}
                             width={100}
                             src={`//${QN_DOMAIN}/${url}`}
-                            // onLoad={this._onloadImg}
                         />
                     </div>
                 )

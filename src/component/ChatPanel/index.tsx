@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { inject } from 'mobx-react'
 import { observer } from 'mobx-react-lite'
 import { get, isEmpty } from 'lodash'
+import Viewer from 'react-viewer'
+import 'react-viewer/dist/index.css'
 
 import styles from './index.module.scss'
 import Editor, { IQnRes } from './Editor'
@@ -29,6 +31,9 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
     const [shouldLoadNewMessageList, setShouldLoadNewMessageList] = useState(
         false
     )
+    // 图片viewer
+    const [viewerVisible, setViewerVisible] = useState(false)
+    const [viewerSrc, setViewerSrc] = useState('')
 
     // 监听滚动
     useEffect(() => {
@@ -111,7 +116,6 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
             url: key
         })
     }
-
     return (
         <div className={styles.chatPanel}>
             <Header />
@@ -125,10 +129,22 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
                                 content={item}
                                 currentUserId={userStore.userInfo.id}
                                 userInfo={userStore.userInfo}
+                                onClickImg={(url: string) => {
+                                    setViewerVisible(true)
+                                    setViewerSrc(url)
+                                }}
                             />
                         )
                     })}
             </div>
+            <Viewer
+                noNavbar
+                noClose
+                onMaskClick={() => setViewerVisible(false)}
+                visible={viewerVisible}
+                onClose={() => setViewerVisible(false)}
+                images={[{ src: viewerSrc }]}
+            />
 
             {isLogin ? (
                 <Editor

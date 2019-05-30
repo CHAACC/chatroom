@@ -43,7 +43,8 @@ function socket() {
             to_group_id,
             from_user_id,
             username,
-            message: msg
+            message: msg,
+            type
         } = msgItem
         // 私聊自己也会收到消息
         const tempId =
@@ -67,7 +68,7 @@ function socket() {
         setChatMsgInfo(tempId, {
             from_user_id,
             from_user_name: username,
-            last_message: msg,
+            last_message: type === 2 ? '[图片]' : msg,
             created_at: moment().format()
         })
     })

@@ -52,6 +52,7 @@ export default function Editor({
                 style={{ fontSize: 24 }}
             />
             <Upload
+                accept="image/*"
                 fileList={fileList}
                 onChange={onUploadChange}
                 customRequest={params => customeUploadQn(params, userInfo.id)}
