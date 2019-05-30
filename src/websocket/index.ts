@@ -38,7 +38,7 @@ function socket() {
         } = store.chatStore
         const { userInfo } = store.userStore
         const {
-            type,
+            is_private,
             to_user_id,
             to_group_id,
             from_user_id,
@@ -47,7 +47,7 @@ function socket() {
         } = msgItem
         // 私聊自己也会收到消息
         const tempId =
-            type === 0
+            is_private === 0
                 ? to_group_id
                 : from_user_id === userInfo.id
                 ? to_user_id

@@ -6,6 +6,8 @@ import { observer } from 'mobx-react-lite'
 import ReactHtmlParser from 'react-html-parser'
 
 import { convertExpression } from '../../../utils/emoji'
+import { QN_DOMAIN } from '../../../constants'
+import { MessageType } from './message-type'
 
 interface IProps {
     content?: IChatStore.ImessageItem
@@ -14,8 +16,33 @@ interface IProps {
 }
 
 const MessageItem = ({ content, currentUserId, userInfo }: IProps) => {
-    const { from_user_id, message, username, created_at, avatar } = content
+    const {
+        from_user_id,
+        message,
+        username,
+        created_at,
+        avatar,
+        type,
+        url
+    } = content
     const isSelf = from_user_id === currentUserId
+    const renderMainContent = () => {
+        switch (type) {
+            case MessageType.TEXT:
+                return ReactHtmlParser(convertExpression(message))
+            case MessageType.IMAGE:
+                return (
+                    <div key={url} onClick={() => {}}>
+                        <img
+                            height={100}
+                            width={100}
+                            src={`//${QN_DOMAIN}/${url}`}
+                            // onLoad={this._onloadImg}
+                        />
+                    </div>
+                )
+        }
+    }
     return (
         <div
             className={classname(styles.wrapper, {
@@ -40,9 +67,8 @@ const MessageItem = ({ content, currentUserId, userInfo }: IProps) => {
                         </span>
                         <span className={styles.createdAt}>{created_at}</span>
                     </div>
-                    <div className={styles.message}>
-                        {ReactHtmlParser(convertExpression(message))}
-                    </div>
+                    <div className={styles.message}>{renderMainContent()}</div>
+
                     <div className={styles.arrows} />
                 </div>
             </div>

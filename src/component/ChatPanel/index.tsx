@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { get, isEmpty } from 'lodash'
 
 import styles from './index.module.scss'
-import Editor from './Editor'
+import Editor, { IQnRes } from './Editor'
 import MessageItem from './MessageItem'
 import Header from './Header'
 import Footer from './Footer'
@@ -78,11 +78,12 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
             const { currentChatId, currentChatType } = chatStore
             const { userInfo } = userStore
             window.socket.emit('message', {
-                type: currentChatType,
+                is_private: currentChatType,
                 message: chatStore.inputValue,
                 from_user_id: userInfo.id,
                 to_group_id: currentChatId,
-                to_user_id: currentChatId
+                to_user_id: currentChatId,
+                type: 1
             })
             setInputValue('')
         }
@@ -94,6 +95,21 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
 
     const selectEmoji = (name: string) => {
         setInputValue(`${inputValue}#(${name})`)
+    }
+
+    const sendImage = (params: IQnRes) => {
+        const { key } = params
+        const { currentChatId, currentChatType } = chatStore
+        const { userInfo } = userStore
+        window.socket.emit('message', {
+            is_private: currentChatType,
+            message: chatStore.inputValue,
+            from_user_id: userInfo.id,
+            to_group_id: currentChatId,
+            to_user_id: currentChatId,
+            type: 2,
+            url: key
+        })
     }
 
     return (
@@ -116,10 +132,12 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
 
             {isLogin ? (
                 <Editor
+                    userInfo={userStore.userInfo}
                     value={inputValue}
                     onChange={handleInputChange}
                     onKeyDown={sendMsg}
                     selectEmoji={selectEmoji}
+                    sendImage={sendImage}
                 />
             ) : (
                 <Footer />

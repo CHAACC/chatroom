@@ -6,7 +6,7 @@ export interface ChatStore extends ChatStoreModel {}
 
 interface ImessageItem {
     id?: number
-    type: 1 | 0
+    is_private: 1 | 0
     message?: string
     created_at?: string
     to_user_id?: number
@@ -14,6 +14,8 @@ interface ImessageItem {
     from_user_id?: number
     username?: string
     avatar?: string
+    type?: 0 | 1 | 2
+    url?: string
 }
 
 interface ILastMessageInfo {
