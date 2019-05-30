@@ -6,8 +6,7 @@ function qnUpload(file: File | UploadFile) {
     return req.get('/qiniu/token')
 }
 
-export function customeUploadQn(options: any, userId: number) {
-    const { action: uploadAction, file, filename, headers, onSuccess } = options
+export function uploadQn(file: UploadFile, userId: number, onComplete) {
     qnUpload(file).then(data => {
         const uploadToken = data
         const observer = {
@@ -19,7 +18,7 @@ export function customeUploadQn(options: any, userId: number) {
                 return err
             },
             complete(res) {
-                onSuccess(res, file)
+                onComplete(res, file)
             }
         }
 
@@ -35,4 +34,9 @@ export function customeUploadQn(options: any, userId: number) {
         )
         const subscription = observable.subscribe(observer) // 上传开始
     })
+}
+
+export function customUploadQn(options: any, userId: number) {
+    const { action: uploadAction, file, filename, headers, onSuccess } = options
+    uploadQn(file, userId, onSuccess)
 }

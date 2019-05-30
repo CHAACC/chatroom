@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react'
-import { Icon, Upload } from 'antd'
+import { Icon, Upload, message } from 'antd'
 import { UploadChangeParam, UploadFile } from 'antd/lib/upload/interface'
 
 import styles from './index.module.scss'
 import EmojiBox from '../EmojiBox'
 import ClickOutside from '../../common/ClickOutside'
-import { customeUploadQn } from '../../../utils/qiniu'
+import { customUploadQn, uploadQn } from '../../../utils/qiniu'
 
 export interface IQnRes {
     hash: string
@@ -38,9 +38,31 @@ export default function Editor({
         fileList: _fileList
     }: UploadChangeParam) => {
         setFileList([..._fileList])
-        console.log(file)
         if (file.status === 'done') {
             sendImage(file.response)
+        }
+    }
+
+    const onPaste = e => {
+        const { items, types } =
+            e.clipboardData || e.originalEvent.clipboardData
+        if (types.includes('Files')) {
+            const limitSize = 1000 * 1024 * 1 // 1 MB
+            for (const item of items) {
+                if (item.kind === 'file') {
+                    const file = item.getAsFile()
+                    if (file) {
+                        if (file.size > limitSize) {
+                            message.error('发的文件不能超过1MB哦!')
+                            return
+                        }
+                        uploadQn(file, userInfo.id, res => {
+                            sendImage(res)
+                        })
+                    }
+                }
+            }
+            e.preventDefault()
         }
     }
 
@@ -55,7 +77,7 @@ export default function Editor({
                 accept="image/*"
                 fileList={fileList}
                 onChange={onUploadChange}
-                customRequest={params => customeUploadQn(params, userInfo.id)}
+                customRequest={params => customUploadQn(params, userInfo.id)}
                 showUploadList={false}
             >
                 <Icon
@@ -68,6 +90,7 @@ export default function Editor({
             <input
                 ref={inputRef}
                 value={value}
+                onPaste={onPaste}
                 onChange={e => onChange(e.target.value)}
                 onKeyDown={onKeyDown}
                 type="text"
