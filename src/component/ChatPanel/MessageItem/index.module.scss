@@ -53,7 +53,7 @@
                 display: inline-block;
                 padding: 5px;
                 background-color: rgba($color: #fff, $alpha: 0.8);
-                max-width: 150px;
+                max-width: 250px;
                 word-wrap: break-word;
                 word-break: break-all;
                 border-radius: 0 10px 10px;
@@ -64,6 +64,13 @@
                     background-repeat: no-repeat;
                     background-size: 30px auto;
                     background-image: url('../../../assets/emoji-sprit.png');
+                }
+                .imgWrapper {
+                    img {
+                        cursor: pointer;
+                        max-width: 100%;
+                        max-height: 500px;
+                    }
                 }
             }
             .arrows {

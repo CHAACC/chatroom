@@ -39,14 +39,11 @@ const MessageItem = ({
             case MessageType.IMAGE:
                 return (
                     <div
+                        className={styles.imgWrapper}
                         key={url}
                         onClick={() => onClickImg(`//${QN_DOMAIN}/${url}`)}
                     >
-                        <img
-                            height={100}
-                            width={100}
-                            src={`//${QN_DOMAIN}/${url}`}
-                        />
+                        <img src={`//${QN_DOMAIN}/${url}`} />
                     </div>
                 )
         }
