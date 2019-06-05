@@ -1,6 +1,6 @@
 .sider {
     width: 65px;
-    background-color: rgba(74, 144, 226, .7);
+    background-color: rgba(74, 144, 226, .9);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -13,12 +13,18 @@
         border-radius: 50%;
         cursor: pointer;
     }
-    .icon{
-        color: rgba(255,255,255,0.8);
-        font-size: 20px;
-        cursor: pointer;
-        :hover{
-            color: #fff;
+    .bottom{
+        display: flex;
+        flex-direction: column;
+        .icon{
+            margin-top: 16px;
+            color: rgba(255,255,255,0.8);
+            font-size: 20px;
+            cursor: pointer;
+            :hover{
+                color: #fff;
+            }
         }
     }
+    
 }

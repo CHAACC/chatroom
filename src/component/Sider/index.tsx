@@ -28,15 +28,23 @@ function Sider({ userStore }: IAllStore) {
                     }}
                 />
             )}
-            <div className={styles.bottom}>
-                {isLogin && (
+            {isLogin && (
+                <div className={styles.bottom}>
+                    <Icon
+                        type="github"
+                        className={styles.icon}
+                        onClick={() =>
+                            window.open('https://github.com/dyshh/chatroom')
+                        }
+                    />
                     <Icon
                         type="poweroff"
                         className={styles.icon}
                         onClick={() => userStore.logout()}
                     />
-                )}
-            </div>
+                </div>
+            )}
+
             <UserInfoSetting
                 visible={modalVisible}
                 onClose={() => setModalVisible(false)}
