@@ -3,6 +3,7 @@ import { inject } from 'mobx-react'
 import { observer } from 'mobx-react-lite'
 import { get, isEmpty } from 'lodash'
 import Viewer from 'react-viewer'
+import { message } from 'antd'
 import 'react-viewer/dist/index.css'
 
 import styles from './index.module.scss'
@@ -10,6 +11,7 @@ import Editor, { IQnRes } from './Editor'
 import MessageItem from './MessageItem'
 import Header from './Header'
 import Footer from './Footer'
+import req from '../../utils/request'
 
 function ChatPanel({ chatStore, userStore }: IAllStore) {
     const {
@@ -18,7 +20,8 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         fetchHistoryList,
         setInputValue,
         firstFetchMessages,
-        scrollBottomFlag
+        scrollBottomFlag,
+        fetchChatList
     } = chatStore
 
     const { isLogin } = userStore
@@ -116,6 +119,15 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
             url: key
         })
     }
+
+    const joinGroup = async (groupName: string) => {
+        await req.post('/group_user', {
+            group_name: groupName
+        })
+        message.success('加群成功')
+        fetchChatList()
+    }
+
     return (
         <div className={styles.chatPanel}>
             <Header />
@@ -133,6 +145,7 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
                                     setViewerVisible(true)
                                     setViewerSrc(url)
                                 }}
+                                joinGroup={joinGroup}
                             />
                         )
                     })}

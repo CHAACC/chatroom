@@ -14,13 +14,15 @@ interface IProps {
     currentUserId?: number
     userInfo?: IUserStore.IUserInfo
     onClickImg?: (url: string) => void
+    joinGroup?: (groupName: string) => void
 }
 
 const MessageItem = ({
     content,
     currentUserId,
     userInfo,
-    onClickImg
+    onClickImg,
+    joinGroup
 }: IProps) => {
     const {
         from_user_id,
@@ -35,6 +37,25 @@ const MessageItem = ({
     const renderMainContent = () => {
         switch (type) {
             case MessageType.TEXT:
+                if (message.startsWith('invite:')) {
+                    const groupName = message.slice(8)
+                    return (
+                        <div>
+                            邀请你
+                            <span
+                                onClick={() => joinGroup(groupName)}
+                                style={{
+                                    cursor: 'pointer',
+                                    color: 'rgba(74, 144, 226, .7)'
+                                }}
+                            >
+                                加入
+                            </span>
+                            群组「
+                            <span style={{ color: 'blue' }}>{groupName}</span>」
+                        </div>
+                    )
+                }
                 return ReactHtmlParser(convertExpression(message))
             case MessageType.IMAGE:
                 return (
