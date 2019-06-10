@@ -24,7 +24,7 @@ function UserInfoSetting({
     const [oldpsw, setOldPsw] = useState('')
     const [newpsw, setNewpsw] = useState('')
     return (
-        <Modal visible={visible} onClose={onClose}>
+        <Modal defaultVisible={visible} onClose={onClose}>
             <div className={styles.userInfoSetting}>
                 <Row>
                     <h4>修改头像</h4>

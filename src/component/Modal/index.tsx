@@ -1,65 +1,48 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 
 import styles from './index.module.scss'
 import IconClose from '../../assets/close.svg'
 
 interface IProps {
-    visible?: boolean
+    children?: React.ReactNode
+    defaultVisible?: boolean
     onClose?: () => void
 }
 
-class Modal extends Component<IProps> {
-    el: HTMLDivElement
-    constructor(props) {
-        super(props)
-        this.el = document.createElement('div')
-        this.el.className = styles.modalWrapper
-        this.el.id = 'modalRoot'
-    }
-    state = {
-        visible: false
-    }
-
-    componentWillUnmount() {
+export default function Modal({ children, onClose, defaultVisible }: IProps) {
+    const [visible, setVisible] = useState(false)
+    const el = useRef(document.createElement('div'))
+    useEffect(() => {
+        el.current.className = styles.modalWrapper
+        el.current.id = 'modalRoot'
         if (document.body.querySelector('#modalRoot')) {
-            document.body.removeChild(this.el)
+            document.body.removeChild(el.current)
         }
-    }
-
-    componentDidUpdate() {
-        if (!this.state.visible) {
+    }, [])
+    useEffect(() => {
+        if (!visible) {
             if (document.body.querySelector('#modalRoot')) {
-                document.body.removeChild(this.el)
+                document.body.removeChild(el.current)
             }
         } else {
             if (!document.body.querySelector('#modalRoot')) {
-                document.body.appendChild(this.el)
+                document.body.appendChild(el.current)
             }
         }
-    }
-
-    static getDerivedStateFromProps(props, state) {
-        if (props.visible !== state.visible) {
-            return {
-                visible: props.visible
-            }
+    })
+    useEffect(() => {
+        if (defaultVisible !== visible) {
+            setVisible(defaultVisible)
         }
-        return null
-    }
-
-    render() {
-        const { children, onClose } = this.props
-        const content = (
-            <div className={styles.modal}>
-                {children}
-                <span className={styles.close} onClick={onClose}>
-                    <img src={IconClose} />
-                </span>
-            </div>
-        )
-        return createPortal(content, this.el)
-    }
+    }, [defaultVisible])
+    const content = (
+        <div className={styles.modal}>
+            {children}
+            <span className={styles.close} onClick={onClose}>
+                <img src={IconClose} />
+            </span>
+        </div>
+    )
+    return createPortal(content, el.current)
 }
-
-export default Modal

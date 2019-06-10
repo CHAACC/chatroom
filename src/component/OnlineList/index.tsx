@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Drawer } from 'antd'
+import classname from 'classname'
 import { inject } from 'mobx-react'
 import { observer } from 'mobx-react-lite'
 
@@ -62,7 +62,10 @@ function OnlineList({
                         return (
                             <div key={id} className={styles.item}>
                                 <div
-                                    className={styles.avatar}
+                                    className={classname(
+                                        styles.avatar,
+                                        styles.gray
+                                    )}
                                     style={{
                                         backgroundImage: `url(${avatar})`
                                     }}

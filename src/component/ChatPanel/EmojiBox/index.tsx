@@ -10,8 +10,9 @@ interface IProps {
 function EmojiBox({ selectEmoji }: IProps) {
     return (
         <div className={styles.emojiBox}>
-            {genIndexArr(50).map(item => (
+            {genIndexArr(50).map((item, i) => (
                 <div
+                    key={i}
                     data-name={emojiAlias[item]}
                     onClick={() => selectEmoji(emojiAlias[item])}
                 >

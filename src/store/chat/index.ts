@@ -68,6 +68,9 @@ export class ChatStore {
     @computed get chatList() {
         const combineList = [...this.groups, ...this.friends]
         return combineList.sort((a, b) => {
+            if (!a.lastest_message_info || !b.lastest_message_info) {
+                return
+            }
             const {
                 lastest_message_info: { created_at: createdAt1 }
             } = a

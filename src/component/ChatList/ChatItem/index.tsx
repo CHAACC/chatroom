@@ -1,5 +1,6 @@
 import React from 'react'
 import classname from 'classname'
+import { get } from 'lodash'
 
 import styles from './index.module.scss'
 import { formatChatTime } from '../../../utils/time'
@@ -20,7 +21,6 @@ function ChatItem({ item, onSelectChat, currentChatId }: IChatItem) {
         lastest_message_info,
         unread
     } = item
-    const { from_user_name, last_message, created_at } = lastest_message_info
     return (
         <div
             onClick={() => onSelectChat(type === 0 ? to_group_id : id, type)}
@@ -36,13 +36,19 @@ function ChatItem({ item, onSelectChat, currentChatId }: IChatItem) {
                 <span>{name}</span>
                 {lastest_message_info && (
                     <span>
-                        {type === 0 && <span>{from_user_name}：</span>}
-                        {last_message}
+                        {type === 0 && (
+                            <span>
+                                {get(lastest_message_info, 'from_user_name')}：
+                            </span>
+                        )}
+                        {get(lastest_message_info, 'last_message')}
                     </span>
                 )}
             </div>
             <div className={styles.right}>
-                <span>{formatChatTime(created_at)}</span>
+                <span>
+                    {formatChatTime(get(lastest_message_info, 'created_at'))}
+                </span>
                 {unread > 0 && <span>{unread}</span>}
             </div>
         </div>

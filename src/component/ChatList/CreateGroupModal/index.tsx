@@ -17,7 +17,7 @@ function CreateGroupModal({ visible, onClose, createGroup }: IProps) {
         set(inputRef, 'current.state.value', undefined)
     }, [visible])
     return (
-        <Modal visible={visible} onClose={onClose}>
+        <Modal defaultVisible={visible} onClose={onClose}>
             <div className={styles.wrapper}>
                 <div>
                     <h4>新建群组</h4>
