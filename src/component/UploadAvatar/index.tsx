@@ -5,7 +5,6 @@ import qs from 'qs'
 import { UploadChangeParam } from 'antd/lib/upload'
 
 import styles from './index.module.scss'
-import { SERVER_URL } from '../../constants'
 
 interface IProps {
     avatar?: string
