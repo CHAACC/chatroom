@@ -55,9 +55,11 @@ export class ChatStore {
      */
     fetchChatListAndFirstMessageList = async () => {
         await this.fetchChatList()
-        this.currentChatId = this.groups[0].to_group_id
-        // 获取历史消息
-        await this.fetchHistoryList(true)
+        if (this.groups[0]) {
+            this.currentChatId = this.groups[0].to_group_id
+            // 获取历史消息
+            await this.fetchHistoryList(true)
+        }
     }
 
     // 群组列表
