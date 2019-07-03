@@ -4,12 +4,11 @@ import moment from 'moment'
 
 import * as store from '../store/index'
 import { formatTime } from '../utils/time'
-
-const SOCKETURL = 'http://127.0.0.1:7001/'
+import { SERVER_URL } from '../constants'
 
 // 稍微封装一下socket.io， 然后暴露出去。
 function socket() {
-    const io = socketIO(`${SOCKETURL}?token=${localStorage.getItem('token')}`)
+    const io = socketIO(`${SERVER_URL}?token=${localStorage.getItem('token')}`)
     io.on('connect', function() {
         message.success('socket连接成功,可接收默认群消息')
     })

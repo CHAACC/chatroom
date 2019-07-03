@@ -4,6 +4,7 @@ import { Row, Button, Input } from 'antd'
 import styles from './index.module.scss'
 import Modal from '../Modal'
 import UploadAvatar from '../UploadAvatar'
+import { SERVER_URL } from '../../constants'
 
 interface IProps {
     visible?: boolean
@@ -30,7 +31,7 @@ function UserInfoSetting({
                     <h4>修改头像</h4>
                     <div>
                         <UploadAvatar
-                            avatar={avatar}
+                            avatar={`${SERVER_URL}${avatar}`}
                             userId={id}
                             handleUploadDone={handleUploadDone}
                         />
