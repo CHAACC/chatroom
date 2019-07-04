@@ -60,7 +60,7 @@ function Login({
         setType(e.target.value)
     }
     return (
-        <Modal defaultVisible={visible} onClose={onClose}>
+        <Modal visible={visible} onClose={onClose}>
             <div className={styles.header}>
                 <RadioGroup onChange={onRadioChange} value={type}>
                     <RadioButton value="1">登录</RadioButton>

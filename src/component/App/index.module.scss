@@ -4,13 +4,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('../../assets/kaws.jpg');
-  background-size: contain;
+  background-image: url('../../assets/background.jpg');
+  background-size: 100% 100%;
 
   .app {
     display: flex;
-    height: 500px;
-    width: 800px;
+    height: 700px;
+    width: 1100px;
     border-radius: 20px;
     overflow: hidden;
     position: relative;

@@ -24,6 +24,7 @@ function Sider({ userStore }: IAllStore) {
                     onClick={() => setModalVisible(true)}
                     className={styles.avartar}
                     style={{
+                        backgroundColor: '#fff',
                         backgroundImage: avatar && `url(${SERVER_URL}${avatar})`
                     }}
                 />

@@ -4,7 +4,6 @@ import { Row, Button, Input } from 'antd'
 import styles from './index.module.scss'
 import Modal from '../Modal'
 import UploadAvatar from '../UploadAvatar'
-import { SERVER_URL } from '../../constants'
 
 interface IProps {
     visible?: boolean
@@ -25,13 +24,13 @@ function UserInfoSetting({
     const [oldpsw, setOldPsw] = useState('')
     const [newpsw, setNewpsw] = useState('')
     return (
-        <Modal defaultVisible={visible} onClose={onClose}>
+        <Modal visible={visible} onClose={onClose}>
             <div className={styles.userInfoSetting}>
                 <Row>
                     <h4>修改头像</h4>
                     <div>
                         <UploadAvatar
-                            avatar={`${SERVER_URL}${avatar}`}
+                            avatar={avatar}
                             userId={id}
                             handleUploadDone={handleUploadDone}
                         />

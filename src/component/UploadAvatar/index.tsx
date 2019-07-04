@@ -5,6 +5,7 @@ import qs from 'qs'
 import { UploadChangeParam } from 'antd/lib/upload'
 
 import styles from './index.module.scss'
+import { SERVER_URL } from '../../constants'
 
 interface IProps {
     avatar?: string
@@ -63,7 +64,11 @@ function UploadAvatar({ avatar, userId, handleUploadDone }: IProps) {
             onChange={handleChange}
         >
             {avatar ? (
-                <img className={styles.avatar} src={avatar} alt="avatar" />
+                <img
+                    className={styles.avatar}
+                    src={`${SERVER_URL}${avatar}`}
+                    alt="avatar"
+                />
             ) : (
                 uploadButton
             )}
