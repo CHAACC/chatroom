@@ -24,8 +24,8 @@ const typeMap = {
         buttonText: '登录'
     },
     2: {
-        usernamePlaceholder: '用户名即昵称，暂不支持修改',
-        passwordPlaceholder: '密码暂不支持修改',
+        usernamePlaceholder: '用户名即昵称',
+        passwordPlaceholder: '初始化密码',
         buttonText: '注册'
     }
 }
