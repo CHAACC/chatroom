@@ -38,7 +38,6 @@ export class UserStore {
         })
         const { token, userInfo } = data
         localStorage.setItem('token', token)
-        await chatStore.fetchChatList()
         runInAction(() => {
             this.isLogin = true
             this.userInfo = userInfo

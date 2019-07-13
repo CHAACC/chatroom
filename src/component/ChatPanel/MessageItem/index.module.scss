@@ -5,6 +5,7 @@
         transform: rotateY(180deg);
         .item {
             .avatar {
+                background-color: #fff;
                 transform: rotateY(180deg);
             }
             .right {
@@ -29,6 +30,7 @@
             height: 40px;
             border-radius: 50%;
             background-size: 100% 100%;
+            background-color: #fff;
         }
         .right {
             position: relative;

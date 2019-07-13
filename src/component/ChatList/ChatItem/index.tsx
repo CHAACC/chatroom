@@ -21,6 +21,7 @@ function ChatItem({ item, onSelectChat, currentChatId }: IChatItem) {
         lastest_message_info,
         unread
     } = item
+
     return (
         <div
             onClick={() => onSelectChat(type === 0 ? to_group_id : id, type)}
@@ -30,7 +31,7 @@ function ChatItem({ item, onSelectChat, currentChatId }: IChatItem) {
             })}
         >
             <div className={styles.avatar}>
-                {type === 1 && <img src={avatar} alt="头像" />}
+                {type === 1 && avatar && <img src={avatar} alt="头像" />}
             </div>
             <div className={styles.center}>
                 <span>{name}</span>
