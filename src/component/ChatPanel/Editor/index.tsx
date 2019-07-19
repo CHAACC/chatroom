@@ -94,7 +94,7 @@ export default function Editor({
                 onChange={e => onChange(e.target.value)}
                 onKeyDown={onKeyDown}
                 type="text"
-                placeholder="活成自己讨厌的样子了吗？"
+                placeholder="可以直接粘贴发送图片哦"
             />
             {emojiVisible && (
                 <ClickOutside onClickOutSide={() => setEmojiVisible(false)}>

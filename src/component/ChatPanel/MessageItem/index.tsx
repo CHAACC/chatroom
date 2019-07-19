@@ -69,6 +69,8 @@ const MessageItem = ({
                 )
         }
     }
+
+    const _avatar = isSelf ? userInfo.avatar : avatar
     return (
         <div
             className={classname(styles.wrapper, {
@@ -80,10 +82,7 @@ const MessageItem = ({
                     className={styles.avatar}
                     style={{
                         backgroundImage:
-                            (userInfo.avatar || avatar) &&
-                            `url(${SERVER_URL}${
-                                isSelf ? userInfo.avatar : avatar
-                            })`
+                            _avatar && `url(${SERVER_URL}${_avatar})`
                     }}
                 />
                 <div className={styles.right}>
