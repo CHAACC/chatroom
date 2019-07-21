@@ -57,23 +57,21 @@ export class UserStore {
     }
 
     updateUserInfo = async (params: IUserStore.IUpdateUserInfoParams) => {
-        const { username, oldpsw, newpsw } = params
+        const { username, oldpsw, newpsw, avatar } = params
         if (oldpsw || newpsw) {
             if (isEmpty(oldpsw) || isEmpty(newpsw)) {
                 message.error('新密码和旧密码都不能为空')
-            }
-        } else {
-            if (isEmpty(username)) {
-                message.error('用户名不能为空')
+                return
             }
         }
-        await req.patch(`/user/${this.userInfo.id}`, {
+        const { data } = await req.patch(`/user/${this.userInfo.id}`, {
             username,
             oldpsw,
-            newpsw
+            newpsw,
+            avatar
         })
         runInAction(() => {
-            this.userInfo.username = username
+            this.userInfo = data
         })
         message.success('修改成功')
     }

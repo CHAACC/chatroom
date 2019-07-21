@@ -9,7 +9,6 @@ interface IProps {
     visible?: boolean
     onClose?: () => void
     userInfo?: IUserStore.IUserInfo
-    handleUploadDone?: (url: string) => void
     updateUserInfo?: (params: IUserStore.IUpdateUserInfoParams) => void
 }
 
@@ -17,7 +16,6 @@ function UserInfoSetting({
     visible,
     onClose,
     userInfo: { avatar, id },
-    handleUploadDone,
     updateUserInfo
 }: IProps) {
     const [username, setUsername] = useState('')
@@ -32,7 +30,9 @@ function UserInfoSetting({
                         <UploadAvatar
                             avatar={avatar}
                             userId={id}
-                            handleUploadDone={handleUploadDone}
+                            handleUploadDone={(url: string) =>
+                                updateUserInfo({ avatar: url })
+                            }
                         />
                     </div>
                 </Row>

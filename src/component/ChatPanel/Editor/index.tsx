@@ -56,9 +56,14 @@ export default function Editor({
                             message.error('发的文件不能超过1MB哦!')
                             return
                         }
-                        uploadQn(file, userInfo.id, res => {
-                            sendImage(res)
-                        })
+                        uploadQn(
+                            file,
+                            userInfo.id,
+                            res => {
+                                sendImage(res)
+                            },
+                            'messageImage'
+                        )
                     }
                 }
             }
@@ -77,7 +82,9 @@ export default function Editor({
                 accept="image/*"
                 fileList={fileList}
                 onChange={onUploadChange}
-                customRequest={params => customUploadQn(params, userInfo.id)}
+                customRequest={params =>
+                    customUploadQn(params, userInfo.id, 'messageImage')
+                }
                 showUploadList={false}
             >
                 <Icon

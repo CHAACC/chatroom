@@ -2,11 +2,18 @@ import req from './request'
 import { UploadFile } from 'antd/lib/upload/interface'
 import * as qiniu from 'qiniu-js'
 
+type imgType = 'messageImage' | 'avatar'
+
 function qnUpload(file: File | UploadFile) {
     return req.get('/qiniu/token')
 }
 
-export function uploadQn(file: UploadFile, userId: number, onComplete) {
+export function uploadQn(
+    file: UploadFile,
+    userId: number,
+    onComplete,
+    type: imgType
+) {
     qnUpload(file).then(data => {
         const uploadToken = data
         const observer = {
@@ -24,7 +31,7 @@ export function uploadQn(file: UploadFile, userId: number, onComplete) {
 
         const config = { useCdnDomain: true }
         const putExtra = {}
-        const key = `${userId}_${new Date().getTime()}_${file.name}`
+        const key = `${type}/${userId}_${new Date().getTime()}_${file.name}`
         const observable = qiniu.upload(
             file,
             key,
@@ -36,7 +43,7 @@ export function uploadQn(file: UploadFile, userId: number, onComplete) {
     })
 }
 
-export function customUploadQn(options: any, userId: number) {
+export function customUploadQn(options: any, userId: number, type: imgType) {
     const { action: uploadAction, file, filename, headers, onSuccess } = options
-    uploadQn(file, userId, onSuccess)
+    uploadQn(file, userId, onSuccess, type)
 }

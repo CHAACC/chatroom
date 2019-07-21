@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Upload, Icon, message } from 'antd'
 import Cookies from 'js-cookie'
-import qs from 'qs'
 import { UploadChangeParam } from 'antd/lib/upload'
+import { customUploadQn } from '../../utils/qiniu'
 
 import styles from './index.module.scss'
-import { SERVER_URL } from '../../constants'
+import { QN_DOMAIN } from '../../constants'
 
 interface IProps {
     avatar?: string
@@ -14,10 +14,10 @@ interface IProps {
 }
 
 function beforeUpload(file) {
-    const allowType = ['image/jpeg', 'image/png']
+    const allowType = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif']
     const isAllowType = allowType.includes(file.type)
     if (!isAllowType) {
-        message.error('只能上传jpeg、png格式的图片')
+        message.error('图片格式错误')
     }
     const isLt2M = file.size / 1024 / 1024 < 2
     if (!isLt2M) {
@@ -42,7 +42,7 @@ function UploadAvatar({ avatar, userId, handleUploadDone }: IProps) {
         }
         if (status === 'done') {
             setLoading(false)
-            handleUploadDone(response.data.avatar)
+            handleUploadDone(response.key)
         }
         if (error) {
             message.error('上传失败')
@@ -55,18 +55,18 @@ function UploadAvatar({ avatar, userId, handleUploadDone }: IProps) {
     }
     return (
         <Upload
-            name="avatar"
+            accept="image/*"
             listType="picture"
             className={styles.uploadAvatar}
             showUploadList={false}
-            action={`/upload_avatar?${qs.stringify(query)}`}
+            customRequest={params => customUploadQn(params, userId, 'avatar')}
             beforeUpload={beforeUpload}
             onChange={handleChange}
         >
             {avatar ? (
                 <img
                     className={styles.avatar}
-                    src={`${SERVER_URL}${avatar}`}
+                    src={`${QN_DOMAIN}/${avatar}`}
                     alt="avatar"
                 />
             ) : (

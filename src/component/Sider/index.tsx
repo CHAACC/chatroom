@@ -4,14 +4,14 @@ import { Icon } from 'antd'
 import { observer } from 'mobx-react-lite'
 
 import styles from './index.module.scss'
-import { SERVER_URL } from '../../constants'
+import { QN_DOMAIN } from '../../constants'
 import UserInfoSetting from '../UserInfoSetting'
 
 function Sider({ userStore }: IAllStore) {
     const [modalVisible, setModalVisible] = useState(false)
     const {
         userInfo,
-        userInfo: { username, avatar },
+        userInfo: { avatar },
         isLogin,
         setUserAvatar,
         updateUserInfo
@@ -25,7 +25,7 @@ function Sider({ userStore }: IAllStore) {
                     className={styles.avartar}
                     style={{
                         backgroundColor: '#fff',
-                        backgroundImage: avatar && `url(${SERVER_URL}${avatar})`
+                        backgroundImage: avatar && `url(${QN_DOMAIN}/${avatar})`
                     }}
                 />
             )}
@@ -50,7 +50,6 @@ function Sider({ userStore }: IAllStore) {
                 visible={modalVisible}
                 onClose={() => setModalVisible(false)}
                 userInfo={userInfo}
-                handleUploadDone={setUserAvatar}
                 updateUserInfo={updateUserInfo}
             />
         </div>

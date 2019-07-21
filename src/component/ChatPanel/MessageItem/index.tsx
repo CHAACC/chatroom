@@ -1,7 +1,6 @@
 import * as React from 'react'
 import styles from './index.module.scss'
 import classname from 'classname'
-import { SERVER_URL } from '../../../constants'
 import { observer } from 'mobx-react-lite'
 import ReactHtmlParser from 'react-html-parser'
 
@@ -62,9 +61,9 @@ const MessageItem = ({
                     <div
                         className={styles.imgWrapper}
                         key={url}
-                        onClick={() => onClickImg(`//${QN_DOMAIN}/${url}`)}
+                        onClick={() => onClickImg(`${QN_DOMAIN}/${url}`)}
                     >
-                        <img src={`//${QN_DOMAIN}/${url}`} />
+                        <img src={`${QN_DOMAIN}/${url}`} />
                     </div>
                 )
         }
@@ -82,7 +81,7 @@ const MessageItem = ({
                     className={styles.avatar}
                     style={{
                         backgroundImage:
-                            _avatar && `url(${SERVER_URL}${_avatar})`
+                            _avatar && `url(${QN_DOMAIN}/${_avatar})`
                     }}
                 />
                 <div className={styles.right}>

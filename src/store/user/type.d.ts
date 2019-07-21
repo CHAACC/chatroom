@@ -14,4 +14,5 @@ interface IUpdateUserInfoParams {
     username?: string
     oldpsw?: string
     newpsw?: string
+    avatar?: string
 }
