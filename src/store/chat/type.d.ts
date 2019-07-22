@@ -66,3 +66,7 @@ interface IChatList {
     groups?: IChat[]
     friends?: IChat[]
 }
+
+interface IUpdateGroupInfoParams {
+    avatar?: string
+}

@@ -13,7 +13,7 @@ interface IProps {
     handleUploadDone?: (url: string) => void
 }
 
-function beforeUpload(file) {
+export function beforeUpload(file) {
     const allowType = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif']
     const isAllowType = allowType.includes(file.type)
     if (!isAllowType) {

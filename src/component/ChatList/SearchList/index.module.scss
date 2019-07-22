@@ -1,27 +1,26 @@
 .searchList {
-    width: 100%;
-    background-color: hsla(0,0%,100%,.9);
-    box-shadow: 0 0 10px rgba(0,0,0,.5);
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
     display: flex;
+    width: 100%;
+    padding: 20px 0 10px;
+    background-color: hsla(0, 0%, 100%, 0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 6px;
     justify-content: center;
     align-items: center;
-    padding: 20px 0 10px;
     .wrapper {
         width: 100%;
         padding: 0 10px;
-        .item{
+        .item {
             display: flex;
+            padding: 5px;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            padding: 5px;
             transition: all 0.3s;
             &:hover {
                 background-color: rgba(74, 144, 226, 0.1);
             }
-            > div:first-child{
+            > div:first-child {
                 display: flex;
                 color: #333;
                 align-items: center;
@@ -32,10 +31,9 @@
                     margin-right: 10px;
                 }
             }
-            > div:nth-of-type(2){
+            > div:nth-of-type(2) {
                 color: rgba(74, 144, 226, 0.5);
             }
-            
         }
     }
 }

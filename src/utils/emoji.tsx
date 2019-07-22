@@ -1,4 +1,3 @@
-import transparentImage from '../assets/emoji-sprit.png'
 export const emojiAlias = [
     '呵呵',
     '哈哈',

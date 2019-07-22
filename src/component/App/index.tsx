@@ -6,7 +6,7 @@ import Sider from '../Sider'
 import ChatPanel from '../ChatPanel'
 import ChatList from '../ChatList'
 import styles from './index.module.scss'
-import io from '../../websocket'
+import io from '../../utils/websocket'
 import OnlineList from '../OnlineList'
 
 declare global {

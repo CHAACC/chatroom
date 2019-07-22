@@ -4,6 +4,7 @@ import { get } from 'lodash'
 
 import styles from './index.module.scss'
 import { formatChatTime } from '../../../utils/time'
+import { QN_DOMAIN } from '../../../constants'
 
 interface IChatItem {
     item: IChatStore.IChat
@@ -31,7 +32,7 @@ function ChatItem({ item, onSelectChat, currentChatId }: IChatItem) {
             })}
         >
             <div className={styles.avatar}>
-                {type === 1 && avatar && <img src={avatar} alt="头像" />}
+                {avatar && <img src={`${QN_DOMAIN}/${avatar}`} alt="头像" />}
             </div>
             <div className={styles.center}>
                 <span>{name}</span>

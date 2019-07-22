@@ -1,18 +1,17 @@
 .chatItem {
-    padding: 10px;
     display: flex;
+    padding: 10px;
     cursor: pointer;
     transition: all 0.5s;
 
     &.current {
-        background-color: rgba(#2e3238, .5);
+        background-color: rgba(#2e3238, 0.5);
     }
 
-    .avatar{
-        border-radius: 50%;
-        background-color: #fff;
+    .avatar {
         width: 50px;
         height: 50px;
+        border-radius: 50%;
         flex: 0 0 50px;
         > img {
             width: 100%;
@@ -33,24 +32,23 @@
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
-            
         }
     }
     .right {
-        width: 35px;
         display: flex;
+        width: 35px;
         flex-direction: column;
         align-items: flex-end;
-        >span:nth-of-type(1){
+        > span:nth-of-type(1) {
             font-size: 12px;
         }
-        >span:nth-of-type(2){
+        > span:nth-of-type(2) {
             display: inline-block;
+            height: 20px;
+            padding: 0 5px;
             background-color: rgba($color: #f5222d, $alpha: 0.7);
             border-radius: 10px;
-            padding: 0 5px;
             min-width: 20px;
-            height: 20px;
             line-height: 19px;
             text-align: center;
         }

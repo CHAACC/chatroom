@@ -1,9 +1,9 @@
-.onlineList{
+.onlineList {
     position: absolute;
-    height: 100%;
     right: 0;
     width: 250px;
-    background-color: hsla(0,0%,98%,.95);
+    height: 100%;
+    background-color: hsla(0, 0%, 98%, 0.95);
     header {
         display: flex;
         height: 50px;
@@ -12,27 +12,55 @@
         align-items: center;
         font-weight: 600;
     }
-    .listWrapper{
+    .modifyAvatar {
         padding: 10px;
         .title {
             font-weight: 600;
-            
+            margin-bottom: 10px;
         }
-        .item {
-            display: flex;
-            height: 40px;
-            align-items: center;
-            .avatar{
-                width: 30px;
-                height: 30px;
-                background-size: 100% 100%;
-                border-radius: 50%;
-                margin-right: 10px;
-                &.gray{
+        .uploadAvatar {
+            > div:nth-of-type(1) {
+                display: flex;
+                width: 120px;
+                height: 120px;
+                border: 1px dashed #d9d9d9;
+                text-align: center;
+                background-color: #fafafa;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: border-color 0.3s ease;
+                justify-content: center;
+                align-items: center;
+            }
+            .avatar {
+                width: 100px;
+                height: 100px;
+                cursor: pointer;
+                &:hover {
                     filter: grayscale(1);
                 }
             }
         }
     }
-    
+    .listWrapper {
+        padding: 10px;
+        .title {
+            font-weight: 600;
+        }
+        .item {
+            display: flex;
+            height: 40px;
+            align-items: center;
+            .avatar {
+                width: 30px;
+                height: 30px;
+                background-size: 100% 100%;
+                border-radius: 50%;
+                margin-right: 10px;
+                &.gray {
+                    filter: grayscale(1);
+                }
+            }
+        }
+    }
 }

@@ -3,7 +3,7 @@ import { message } from 'antd'
 import moment from 'moment'
 
 import * as store from '../store/index'
-import { formatTime } from '../utils/time'
+import { formatTime } from './time'
 import { SERVER_URL } from '../constants'
 
 // 稍微封装一下socket.io， 然后暴露出去。

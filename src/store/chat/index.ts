@@ -1,4 +1,4 @@
-import { observable, action, computed, runInAction, toJS } from 'mobx'
+import { observable, action, computed, runInAction } from 'mobx'
 import { isEmpty } from 'lodash'
 import { stringify } from 'qs'
 
@@ -197,6 +197,13 @@ export class ChatStore {
     @observable scrollBottomFlag: boolean = false
     @action setScrollBottomFlag = () => {
         this.scrollBottomFlag = !this.scrollBottomFlag
+    }
+
+    updateGroupInfo = async (params: IChatStore.IUpdateGroupInfoParams) => {
+        const { avatar } = params
+        await req.patch(`/group/${this.currentChatId}`, {
+            avatar
+        })
     }
 }
 

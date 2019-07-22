@@ -18,6 +18,7 @@ function ChatList({ chatStore, userStore }: IAllStore) {
     useEffect(() => {
         fetchChatListAndFirstMessageList()
     }, [])
+
     return (
         <div className={styles.chatList}>
             {isLogin && <SearchHeader />}

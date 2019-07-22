@@ -3,6 +3,7 @@ import { Empty, Icon } from 'antd'
 
 import styles from './index.module.scss'
 import { IResult, IUser, IGroup } from '../SearchHeader/type'
+import { QN_DOMAIN } from '../../../constants'
 
 interface IProps {
     result: IResult
@@ -25,7 +26,10 @@ function SearchList({ result, addUser, addGroup }: IProps) {
                                 return (
                                     <div key={id} className={styles.item}>
                                         <div>
-                                            <img src={avatar} alt="头像" />
+                                            <img
+                                                src={`${QN_DOMAIN}/${avatar}`}
+                                                alt="头像"
+                                            />
                                             <div>{name}</div>
                                         </div>
                                         <div onClick={() => addUser(item)}>
@@ -40,10 +44,14 @@ function SearchList({ result, addUser, addGroup }: IProps) {
                         <div>
                             <h4>群组</h4>
                             {groups.map(item => {
-                                const { id, name } = item
+                                const { id, name, avatar } = item
                                 return (
                                     <div key={id} className={styles.item}>
                                         <div>
+                                            <img
+                                                src={`${QN_DOMAIN}/${avatar}`}
+                                                alt="头像"
+                                            />
                                             <div>{name}</div>
                                         </div>
                                         <div onClick={() => addGroup(item)}>
