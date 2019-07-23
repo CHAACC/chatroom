@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import classname from 'classname'
 import { inject } from 'mobx-react'
 import { observer } from 'mobx-react-lite'
-import { Upload, Icon, message, Input, Button } from 'antd'
+import { Upload, Icon, message, Input, Button, Modal } from 'antd'
 import { get } from 'lodash'
 
 import styles from './index.module.scss'
@@ -20,9 +20,17 @@ interface IStoreProps {
     userId?: number
     currentChatItem?: IChatStore.IChat
     updateGroupInfo?: (params: IChatStore.IUpdateGroupInfoParams) => void
+    dissolveGroup?: () => void
+    leaveGroup?: () => void
+    fetchChatListAndFirstMessageList?: () => void
 }
 
 interface IProps extends IStoreProps {}
+
+const typeMap = {
+    0: '解散',
+    1: '退出'
+}
 
 function OnlineList({
     onlineList,
@@ -31,7 +39,10 @@ function OnlineList({
     currentChatId,
     userId,
     currentChatItem,
-    updateGroupInfo
+    updateGroupInfo,
+    dissolveGroup,
+    leaveGroup,
+    fetchChatListAndFirstMessageList
 }: IProps) {
     const [loading, setLoading] = useState(false)
     const [groupName, setGroupName] = useState(null)
@@ -73,6 +84,23 @@ function OnlineList({
         }
     }
 
+    function showConfirm(type: 0 | 1) {
+        Modal.confirm({
+            title: `再次确认是否${typeMap[type]}该群？`,
+            okText: '确定',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk: async () => {
+                if (type) {
+                    await leaveGroup()
+                    fetchChatListAndFirstMessageList()
+                } else {
+                    dissolveGroup()
+                }
+            }
+        })
+    }
+
     return (
         onlineListVisible && (
             <div
@@ -80,6 +108,18 @@ function OnlineList({
                 className={styles.onlineList}
             >
                 <header>群组信息</header>
+                <div className={styles.button}>
+                    {groupOwnerID === userId ? (
+                        <Button type="danger" onClick={() => showConfirm(0)}>
+                            解散群组
+                        </Button>
+                    ) : (
+                        <Button type="danger" onClick={() => showConfirm(1)}>
+                            退出群组
+                        </Button>
+                    )}
+                </div>
+
                 {groupOwnerID === userId && (
                     <div className={styles.modifyGroupInfo}>
                         <div className={styles.title}>
@@ -172,7 +212,14 @@ export default inject((store: IAllStore) => {
         onlineListVisible,
         setOnlineListVisible
     } = globalStore
-    const { currentChatId, currentChatItem, updateGroupInfo } = chatStore
+    const {
+        currentChatId,
+        currentChatItem,
+        updateGroupInfo,
+        dissolveGroup,
+        leaveGroup,
+        fetchChatListAndFirstMessageList
+    } = chatStore
     const {
         userInfo: { id }
     } = userStore
@@ -184,6 +231,9 @@ export default inject((store: IAllStore) => {
         currentChatId,
         userId: id,
         currentChatItem,
-        updateGroupInfo
+        updateGroupInfo,
+        dissolveGroup,
+        leaveGroup,
+        fetchChatListAndFirstMessageList
     }
 })(observer(OnlineList))

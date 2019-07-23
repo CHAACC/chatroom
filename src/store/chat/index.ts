@@ -1,6 +1,7 @@
 import { observable, action, computed, runInAction } from 'mobx'
 import { isEmpty } from 'lodash'
 import { stringify } from 'qs'
+import { message as Message } from 'antd'
 
 import req from '../../utils/request'
 import { formatTime } from '../../utils/time'
@@ -57,7 +58,11 @@ export class ChatStore {
         await this.fetchChatList()
         if (this.groups[0]) {
             this.currentChatId = this.groups[0].to_group_id
-            // 获取历史消息
+            this.currentChatType = 0
+            await this.fetchHistoryList(true)
+        } else if (this.friends[0]) {
+            this.currentChatId = this.friends[0].id
+            this.currentChatType = 1
             await this.fetchHistoryList(true)
         }
     }
@@ -199,12 +204,27 @@ export class ChatStore {
         this.scrollBottomFlag = !this.scrollBottomFlag
     }
 
+    // 修改群信息
     updateGroupInfo = async (params: IChatStore.IUpdateGroupInfoParams) => {
         const { name, avatar } = params
         await req.patch(`/group/${this.currentChatId}`, {
             name,
             avatar
         })
+    }
+
+    // 解散群
+    dissolveGroup = async () => {
+        const { data } = await req.delete(`/group/${this.currentChatId}`)
+        Message.success(data)
+    }
+
+    // 退群
+    leaveGroup = async () => {
+        const { data } = await req.patch('/group/leave', {
+            group_id: this.currentChatId
+        })
+        Message.success(data)
     }
 }
 
