@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import classname from 'classname'
 import { inject } from 'mobx-react'
 import { observer } from 'mobx-react-lite'
-import { Upload, Icon, message } from 'antd'
+import { Upload, Icon, message, Input, Button } from 'antd'
 import { get } from 'lodash'
 
 import styles from './index.module.scss'
@@ -34,6 +34,7 @@ function OnlineList({
     updateGroupInfo
 }: IProps) {
     const [loading, setLoading] = useState(false)
+    const [groupName, setGroupName] = useState(null)
 
     useEffect(() => {
         if (onlineListVisible) {
@@ -42,6 +43,10 @@ function OnlineList({
             })
         }
     }, [onlineListVisible])
+
+    const modifyGroupName = () => {
+        updateGroupInfo({ name: groupName })
+    }
 
     const uploadButton = (
         <div>
@@ -76,7 +81,17 @@ function OnlineList({
             >
                 <header>群组信息</header>
                 {groupOwnerID === userId && (
-                    <div className={styles.modifyAvatar}>
+                    <div className={styles.modifyGroupInfo}>
+                        <div className={styles.title}>
+                            <div>修改群名称</div>
+                        </div>
+                        <div className={styles.name}>
+                            <Input
+                                value={groupName}
+                                onChange={e => setGroupName(e.target.value)}
+                            />
+                            <Button onClick={modifyGroupName}>确认修改</Button>
+                        </div>
                         <div className={styles.title}>
                             <div>修改群头像</div>
                         </div>

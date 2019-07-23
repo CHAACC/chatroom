@@ -200,8 +200,9 @@ export class ChatStore {
     }
 
     updateGroupInfo = async (params: IChatStore.IUpdateGroupInfoParams) => {
-        const { avatar } = params
+        const { name, avatar } = params
         await req.patch(`/group/${this.currentChatId}`, {
+            name,
             avatar
         })
     }

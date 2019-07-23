@@ -68,5 +68,6 @@ interface IChatList {
 }
 
 interface IUpdateGroupInfoParams {
+    name?: string
     avatar?: string
 }

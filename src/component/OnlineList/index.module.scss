@@ -12,11 +12,17 @@
         align-items: center;
         font-weight: 600;
     }
-    .modifyAvatar {
+    .modifyGroupInfo {
         padding: 10px;
         .title {
             font-weight: 600;
             margin-bottom: 10px;
+        }
+        .name {
+            margin-bottom: 10px;
+            > input {
+                margin-bottom: 10px;
+            }
         }
         .uploadAvatar {
             > div:nth-of-type(1) {
