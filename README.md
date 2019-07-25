@@ -9,10 +9,12 @@ Sever repository address: [https://github.com/dyshh/ramos-server](https://github
 ## Functions
 
 1. Friends, groups, private chat, group chat
-2. Text, pictures, expression and paste pictures
+2. Text, expression, pictures and paste pictures, emoji
 3. Display online users
 4. Search users and groups,add group and add Friends
-5. upload avatar and update username,password
+5. Upload avatar and update username,password
+6. Group owner manage group and member leave group
+7. Give avatar randomly
 
 ## Screenshot
 
