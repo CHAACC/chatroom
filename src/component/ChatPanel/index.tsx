@@ -84,10 +84,14 @@ function ChatPanel({ chatStore, userStore }: IAllStore) {
         if (e.keyCode === 13) {
             e.preventDefault()
             const { currentChatId, currentChatType } = chatStore
+            if (!/^(?!(\s+$))/.test(inputValue)) {
+                message.error('不能发送空字符')
+                return
+            }
             const { userInfo } = userStore
             window.socket.emit('message', {
                 is_private: currentChatType,
-                message: chatStore.inputValue,
+                message: inputValue,
                 from_user_id: userInfo.id,
                 to_group_id: currentChatId,
                 to_user_id: currentChatId,

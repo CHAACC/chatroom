@@ -23,12 +23,13 @@ function ChatItem({ item, onSelectChat, currentChatId }: IChatItem) {
         unread
     } = item
 
+    const isCurrent =
+        type === 0 ? currentChatId === to_group_id : currentChatId === id
     return (
         <div
             onClick={() => onSelectChat(type === 0 ? to_group_id : id, type)}
             className={classname(styles.chatItem, {
-                [styles.current]:
-                    currentChatId === to_group_id || currentChatId === id
+                [styles.current]: isCurrent
             })}
         >
             <div className={styles.avatar}>

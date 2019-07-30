@@ -91,7 +91,14 @@ const MessageItem = ({
                         </span>
                         <span className={styles.createdAt}>{created_at}</span>
                     </div>
-                    <div className={styles.message}>{renderMainContent()}</div>
+                    <div
+                        className={classname(
+                            styles.message,
+                            isSelf && styles.self
+                        )}
+                    >
+                        {renderMainContent()}
+                    </div>
 
                     <div className={styles.arrows} />
                 </div>
