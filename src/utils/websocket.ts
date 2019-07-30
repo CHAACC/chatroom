@@ -79,6 +79,11 @@ function socket() {
             store.globalStore.setOfflineList(offlineList)
         }
     })
+
+    io.on('refresh_chat_list', () => {
+        const { fetchChatList } = store.chatStore
+        fetchChatList()
+    })
     return io
 }
 
