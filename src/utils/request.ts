@@ -3,8 +3,11 @@ import Cookies from 'js-cookie'
 import { message } from 'antd'
 import { get } from 'lodash'
 
+// 本地开发模式
+export const IS_LOCAL = process.env.NODE_ENV === 'development'
+
 const instance = axios.create({
-    baseURL: 'http://localhost:7001',
+    baseURL: IS_LOCAL ? 'http://localhost:7001' : 'https://yaojiang.top',
     timeout: 1000,
     headers: {
         'x-csrf-token': Cookies.get('csrfToken')

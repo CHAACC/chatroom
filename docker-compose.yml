@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+    chatroom-fe:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: chatroom-fe
+        ports:
+            - '80:80'

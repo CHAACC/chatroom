@@ -16,7 +16,7 @@ function socket() {
         message.warning('socket断开连接')
     })
     io.on('error', err => {
-        message.error(err)
+        message.error(err.message)
     })
     io.on('warn', (msg: string) => {
         message.warning(msg)
