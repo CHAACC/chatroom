@@ -2,12 +2,10 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 import { message } from 'antd'
 import { get } from 'lodash'
-
-// 本地开发模式
-export const IS_LOCAL = process.env.NODE_ENV === 'development'
+import { SERVER_URL } from '../constants'
 
 const instance = axios.create({
-    baseURL: IS_LOCAL ? 'http://localhost:7001' : 'https://182.61.35.13:7001',
+    baseURL: SERVER_URL,
     timeout: 1000,
     headers: {
         'x-csrf-token': Cookies.get('csrfToken')
