@@ -4,6 +4,7 @@ import { message } from 'antd'
 import { get } from 'lodash'
 
 const instance = axios.create({
+    baseURL: 'http://localhost:7001',
     timeout: 1000,
     headers: {
         'x-csrf-token': Cookies.get('csrfToken')
