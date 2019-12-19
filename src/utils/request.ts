@@ -7,7 +7,7 @@ import { get } from 'lodash'
 export const IS_LOCAL = process.env.NODE_ENV === 'development'
 
 const instance = axios.create({
-    baseURL: IS_LOCAL ? 'http://localhost:7001' : 'https://yaojiang.top',
+    baseURL: IS_LOCAL ? 'http://localhost:7001' : 'https://182.61.35.13:7001',
     timeout: 1000,
     headers: {
         'x-csrf-token': Cookies.get('csrfToken')

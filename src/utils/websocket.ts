@@ -4,7 +4,8 @@ import moment from 'moment'
 
 import * as store from '../store/index'
 import { formatTime } from './time'
-import { SERVER_URL } from '../constants'
+
+const SERVER_URL = `//${window.location.hostname}:7001`
 
 // 稍微封装一下socket.io， 然后暴露出去。
 function socket() {
