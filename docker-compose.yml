@@ -7,4 +7,4 @@ services:
             dockerfile: Dockerfile
         image: chatroom-fe
         ports:
-            - '80:80'
+            - '3000:80'
